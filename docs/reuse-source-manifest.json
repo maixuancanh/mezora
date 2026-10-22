@@ -1,0 +1,130 @@
+{
+  "project": "Mezora",
+  "date": "2026-10-23",
+  "status": "implemented_selected_components",
+  "policy": "Reuse selected compatible code with notices and tests; inspect transitive imports. Do not assume public repository means reuse permission. Preserve original hackathon contribution boundaries.",
+  "sources": [
+    {
+      "id": "dreambot",
+      "repo": "https://github.com/somnia-chain/dreamdex-bot-kit",
+      "commit": "25798660bbe4674a6f83a960b202852896e2fed4",
+      "license": "MIT",
+      "license_read": true,
+      "files": [
+        "strategies/starter/src/strategy.ts",
+        "scripts/railway-start.mjs",
+        "docs/24-7-operations.md"
+      ],
+      "decision": "adapt_selected",
+      "target": "packages/automation/src/decide.ts; apps/worker/src/main.ts",
+      "change": "Replace CLOB Quote/Snapshot and number money with MUSD bigint and Proposal; retain pure decision/runtime separation. Inspect runner imports before copying; no Somnia trading stack or private-key env UI.",
+      "phase": "Wave 2; proposal-only rule can arrive earlier"
+    },
+    {
+      "id": "agentfabric",
+      "repo": "https://github.com/nschwermann/agent_fabric",
+      "commit": "cedbe0e2510de0015a1d272dcb618f369334ea27",
+      "license": "MIT",
+      "license_read": true,
+      "files": [
+        "apps/web/features/sessionKeys/view/ScopeApprovalCard.tsx",
+        "apps/web/lib/sessionKeys/types.ts"
+      ],
+      "decision": "adapt_selected",
+      "target": "apps/web/src/features/approvals/scope-card.tsx",
+      "change": "Extract presentational scope card, replace account hooks/types/metadata with Mezora policy. Never inherit verified badges from an address label. No assumption EIP-7702 works on Mezo.",
+      "phase": "Wave 1 preview; Wave 2 delegated grants"
+    },
+    {
+      "id": "omniagentpay",
+      "repo": "https://github.com/omniagentpay/omniagentpay",
+      "commit": "8af4b414a4b50e591c25274ec5a34f21fedc81f8",
+      "license": "MIT",
+      "license_read": true,
+      "files": [
+        "src/omniagentpay/intents/service.py",
+        "src/omniagentpay/guards/budget.py",
+        "src/omniagentpay/storage/redis.py"
+      ],
+      "decision": "adapt_model_rewrite_accounting",
+      "target": "packages/domain/src/payment-intent.ts; packages/db/src/reservations.ts",
+      "change": "Port intent model to TypeScript with attribution if derived. Rewrite reservation in Postgres transaction using numeric(78,0), row locking and unique idempotency; Redis adapter uses float and multi-step commit/release, not accepted for MUSD accounting.",
+      "phase": "Wave 1"
+    },
+    {
+      "id": "shadcn",
+      "repo": "https://github.com/shadcn-ui/ui",
+      "commit": "fa38b4960fa3c9aa0f2639b5a54ec0566fdd0240",
+      "license": "MIT",
+      "license_read": true,
+      "files": [
+        "LICENSE.md"
+      ],
+      "decision": "reuse_components",
+      "target": "packages/ui",
+      "change": "Select table/sheet/dialog/form primitives at frozen version, own layout and design tokens. Check selected component paths and dependencies at import.",
+      "phase": "Wave 1"
+    },
+    {
+      "id": "openzeppelin",
+      "repo": "https://github.com/OpenZeppelin/openzeppelin-contracts",
+      "commit": null,
+      "license": "MIT",
+      "license_read": true,
+      "files": [
+        "LICENSE"
+      ],
+      "decision": "dependency_pin_before_install",
+      "target": "contracts/src/MezoraTreasury.sol",
+      "change": "Use SafeERC20, ownership and reentrancy primitives from a pinned stable release; avoid copying protocol core.",
+      "phase": "Wave 1"
+    },
+    {
+      "id": "midday",
+      "repo": "https://github.com/midday-ai/midday",
+      "commit": "51587319f26a0ffaa9dfccab1920373cb65689b7",
+      "license": "AGPL-3.0",
+      "license_read": true,
+      "files": [
+        "LICENSE"
+      ],
+      "decision": "ux_reference_default",
+      "target": "docs/mezora/2026-10-23-ui-ux.md",
+      "change": "AGPL is usable with its obligations; not selected as baseline due scope and license coupling. Use workflow inspiration and independently implement UI with MIT primitives.",
+      "phase": "Design"
+    },
+    {
+      "id": "faktory",
+      "repo": "https://github.com/Yonkoo11/faktory",
+      "commit": "ce73ef56f116bb05c717c94653145791948837b1",
+      "license": null,
+      "license_read": false,
+      "files": [
+        "app/src/components/InvoiceForm.tsx",
+        "contracts/src/InvoiceNFT.sol"
+      ],
+      "decision": "concept_only_until_license_verified",
+      "change": "No copy authorization found at repo root; borrow product concepts only. No mock APY or invoice collateral assumption.",
+      "phase": "Design"
+    },
+    {
+      "id": "mate",
+      "url": "https://mate.anvita.xyz/home",
+      "decision": "public_workflow_reference",
+      "change": "Context assistant for invoice/proposal; no verified official reusable source."
+    },
+    {
+      "id": "paybox",
+      "url": "https://docs.paybox.sh",
+      "decision": "request_and_approval_reference",
+      "change": "SDK Apache-2.0 metadata previously observed; not a required dependency because Mezo execution support unverified; backend not established open source."
+    },
+    {
+      "id": "mercury",
+      "url": "https://mercury.com/bill-pay",
+      "decision": "public_ux_reference",
+      "change": "Bill inbox/status/detail/approval workflow. No code/assets copied."
+    }
+  ],
+  "actual_usage_notes": "Dreambot automation, Omni approval binding and AgentFabric scope UI adapted; OZ selected source imported; Radix used directly, shadcn evaluated but not imported; design-only sources remain references."
+}

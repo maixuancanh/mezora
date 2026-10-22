@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.next-live/
+.env*
+!.env.example
+.data/
+coverage/
+test-results/
+playwright-report/
+contracts/out/
+contracts/cache/
+*.log
+*.tsbuildinfo
+

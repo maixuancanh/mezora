@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-10-22T19:52:40.137Z",
+  "scope": "local Anvil only",
+  "check": "success hash lost + duplicate reverted hash posted -> recover original success",
+  "first": "0x9e18ede3d05420206b18e663025f40c7d041784c5f36e07453931ca298093250",
+  "duplicate": "0x5d2488c311e5ae7255f6445f133f7ec2d1a3070907ffc56975f4c2772f35707e",
+  "before": {
+    "balance": "745",
+    "reserved": "25",
+    "available": "720",
+    "buffer": "300",
+    "surplus": "420"
+  },
+  "after": {
+    "balance": "738",
+    "reserved": "25",
+    "available": "713",
+    "buffer": "300",
+    "surplus": "413"
+  }
+}

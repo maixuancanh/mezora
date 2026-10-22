@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-10-22T19:53:41.968Z",
+  "url": "http://127.0.0.1:3210",
+  "checks": [
+    "create/verify/reserve/pay",
+    "surplus conservation",
+    "replay rejected",
+    "origin blocked",
+    "reload persistence",
+    "session isolation",
+    "live unconfigured honest",
+    "mobile no document overflow"
+  ],
+  "before": {
+    "balance": "1000",
+    "reserved": "250",
+    "available": "750",
+    "buffer": "300",
+    "surplus": "450"
+  },
+  "after": {
+    "balance": "750",
+    "reserved": "0",
+    "available": "750",
+    "buffer": "300",
+    "surplus": "450"
+  },
+  "pageErrors": []
+}

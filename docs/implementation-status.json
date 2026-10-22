@@ -1,0 +1,38 @@
+{
+  "updated_at": "2026-10-22T19:51:55.787Z",
+  "project": "Mezora",
+  "root": "D:/bitgethackathon/products/mezora",
+  "branch": "build/mezora-mvp",
+  "local_url": "http://127.0.0.1:3210",
+  "phases": {
+    "P0": "official MUSD read verified; treasury deployment pending",
+    "P1": "contract and invariant tests pass",
+    "P2": "persistent PostgreSQL/PGlite workspace, EOA auth, exact requests and receipt recovery implemented",
+    "P3": "UI browser flow and390px mobile verified",
+    "P4": "read-only buffer/surplus proposal integrated; Trove repay pending",
+    "P5": "not published or submitted",
+    "P6": "future"
+  },
+  "evidence": {
+    "unit_tests": 28,
+    "contract_tests": 18,
+    "browser": "docs/browser-evidence.json",
+    "local_evm": "docs/local-evm-evidence.json",
+    "recovery": "docs/recovery-evidence.json",
+    "official_token": "deployments/testnet-token-verification.json",
+    "duplicate_recovery": "docs/duplicate-recovery-evidence.json"
+  },
+  "external_state": {
+    "testnet_treasury_deployed": false,
+    "hosted": false,
+    "public_repo": false,
+    "submitted": false
+  },
+  "remaining": [
+    "Funded owner wallet path for Mezo deployment",
+    "Hosted durable app/PostgreSQL",
+    "Actual Mezo testnet treasury transaction evidence",
+    "Deck/video/public repository/submission"
+  ],
+  "no_credentials_stored": true
+}

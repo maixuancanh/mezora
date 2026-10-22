@@ -1,0 +1,56 @@
+{
+  "checkedAt": "2026-10-22T19:50:15.912Z",
+  "scope": "Anvil local EVM only, not Mezo testnet",
+  "chainId": 31611,
+  "treasury": "0xa513e6e4b8f2a923d98304ec87f64353c4d5c853",
+  "token": "0x0165878a594ca255338adfa4d48449f69242eb8f",
+  "checks": [
+    "wallet signature login + replay rejection",
+    "MUSD approval + protected deposit",
+    "bill reserve/pay exact receipt",
+    "bill replay rejected",
+    "treasury changed amount conflict",
+    "protected withdrawal replay rejected",
+    "surplus conservation"
+  ],
+  "initial": {
+    "balance": "1000",
+    "reserved": "0",
+    "available": "1000",
+    "buffer": "300",
+    "surplus": "700"
+  },
+  "reserved": {
+    "balance": "1000",
+    "reserved": "250",
+    "available": "750",
+    "buffer": "300",
+    "surplus": "450"
+  },
+  "paid": {
+    "balance": "750",
+    "reserved": "0",
+    "available": "750",
+    "buffer": "300",
+    "surplus": "450"
+  },
+  "final": {
+    "balance": "745",
+    "reserved": "0",
+    "available": "745",
+    "buffer": "300",
+    "surplus": "445"
+  },
+  "txHashes": [
+    "0xfbc35fbb177136b906c7bf5a8a1711a33dcac2fd51b827d02f888e7caf513cd9",
+    "0xfbc35fbb177136b906c7bf5a8a1711a33dcac2fd51b827d02f888e7caf513cd9",
+    "0xbd06c459d2222780b34dd466ff44e9ec48bd05a6374e7fc8f99a4b8887809af2",
+    "0xbd06c459d2222780b34dd466ff44e9ec48bd05a6374e7fc8f99a4b8887809af2",
+    "0xdf52f5cdfcd13d220721533896f2a6707f6016fbe9cdfddb53d7258ce7dc891c",
+    "0xdf52f5cdfcd13d220721533896f2a6707f6016fbe9cdfddb53d7258ce7dc891c",
+    "0xbc98f01a8db75106f271ebcef672e10f3ccf0e9a5de821ccfe413c35d7565b8a",
+    "0xbc98f01a8db75106f271ebcef672e10f3ccf0e9a5de821ccfe413c35d7565b8a",
+    "0x4a9c99a969e3d26f338520d8e5dc6b1653c6bdd73208af0ac28b708fff71ffc7",
+    "0x4a9c99a969e3d26f338520d8e5dc6b1653c6bdd73208af0ac28b708fff71ffc7"
+  ]
+}

@@ -26,4 +26,3 @@ export async function workspaceIdentity(mode:"demo"|"live"){
  let sid=jar.get("mezora-demo")?.value;if(!sid||!/^\w{48}$/.test(sid)){sid=randomBytes(24).toString("hex");jar.set("mezora-demo",sid,{httpOnly:true,sameSite:"strict",path:"/",maxAge:2592000,secure:process.env.NODE_ENV==="production"});}
  return {id:"demo:"+sid,owner:null};
 }
-

@@ -33,4 +33,3 @@ export async function treasuryPost(req:NextRequest){const b=await readBody(req),
  if(b.action==="broadcast")return broadcast(db,identity.id,identity.owner!,b.intentId,b.txHash);
  return prepareTreasuryAction(db,identity.id,identity.owner!,b.action,b.amount);
 }
-

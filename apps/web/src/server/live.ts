@@ -187,4 +187,3 @@ export async function liveSnapshot(db:Database,ns:string,owner:string){
  const buffer=money(s.summary.buffer),extra=c.available>buffer?c.available-buffer:0n;
  return {...s,walletAddress:owner,network:{...s.network,tokenAddress:c.token,treasuryAddress:c.treasury},summary:{balance:show(c.balance),reserved:show(c.reserved),available:show(c.available),buffer:show(buffer),surplus:show(extra)},worker,gasBalance:c.gas.toString(),blockNumber:c.block.number?.toString(),blockHash:c.block.hash,observedAt:Number(c.block.timestamp)};
 }
-

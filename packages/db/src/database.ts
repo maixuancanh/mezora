@@ -28,4 +28,3 @@ export async function createDatabase(url?:string):Promise<Database>{
 }
 const globalDb=globalThis as typeof globalThis & {mezoraDb?:Promise<Database>};
 export const database=()=>globalDb.mezoraDb??=(createDatabase(process.env.DATABASE_URL));
-

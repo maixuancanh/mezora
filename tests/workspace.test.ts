@@ -28,4 +28,3 @@ describe("persistent local scenario accounting",()=>{
   await expect(treasuryAction(db,"concurrent","withdraw","201")).rejects.toThrow();
  });
 });
-

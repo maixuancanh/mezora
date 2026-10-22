@@ -9,4 +9,3 @@ await post("/api/treasury",{mode:"live",action:"broadcast",intentId:r.intentId,t
 expect(BigInt(after.summary.balance)).toBe(BigInt(before.summary.balance)-7n);
 expect(after.activity.some((a:any)=>a.title==="Original successful transaction recovered"&&a.txHash===first)).toBe(true);
 await writeFile("docs/duplicate-recovery-evidence.json",JSON.stringify({checkedAt:new Date().toISOString(),scope:"local Anvil only",check:"success hash lost + duplicate reverted hash posted -> recover original success",first,duplicate,before:before.summary,after:after.summary},null,2));console.log("PASS original success recovered after duplicate reverted",after.summary);await api.dispose();
-

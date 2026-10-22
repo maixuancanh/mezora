@@ -57,4 +57,3 @@ export async function treasuryAction(db:Database,ns:string,action:string,amount:
  await log(q,ns,action==="buffer"?"Operating buffer updated":"Scenario "+action,show(n)+" MUSD");
  return rawSnapshot(q,ns,"demo");});
 }
-

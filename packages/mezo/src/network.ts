@@ -31,4 +31,3 @@ export async function readTreasury(owner?:string){
 }
 export const treasuryData=(name:"deposit"|"withdraw"|"depositOnce"|"withdrawOnce"|"reserve"|"pay"|"cancel",args:unknown[])=>encodeFunctionData({abi:treasuryAbi,functionName:name,args:args as never});
 export const approvalData=(treasury:`0x${string}`,amount:bigint)=>encodeFunctionData({abi:erc20Abi,functionName:"approve",args:[treasury,amount]});
-

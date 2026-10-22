@@ -14,4 +14,3 @@ Immutable treasury ownership logic is original Mezora implementation, not copied
 Midday AGPL code is not included; Mercury/Midday public workflow references are design inspiration. shadcn/ui was evaluated but no code imported; current primitives use Radix directly.
 
 New contribution: MUSD treasury/commitments, replay-safe API deposit/withdraw, workspace accounting/indexing, exact payload binding, recovery/reorg reconciliation, integer money and Mezo integration, cohesive UI and tests. Awards of upstream projects do not certify Mezora security.
-

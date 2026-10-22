@@ -10,4 +10,3 @@ const treasury=await deploy("contracts/out/MezoraTreasury.sol/MezoraTreasury.jso
 const artifact=JSON.parse(await readFile("contracts/out/MezoraTreasury.t.sol/MockToken.json","utf8"));
 await p.waitForTransactionReceipt({hash:await wallet.writeContract({address:token,abi:artifact.abi,functionName:"mint",args:[account.address,parseEther("2000")]})});
 await mkdir(".data",{recursive:true});await writeFile(".data/local-evm.json",JSON.stringify({token,treasury,owner:account.address,rpc},null,2));console.log({token,treasury,owner:account.address,scope:"local Anvil only"});
-

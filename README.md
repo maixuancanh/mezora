@@ -82,4 +82,3 @@ See docs/THIRD_PARTY_NOTICES.md, docs/UI_REUSE.md and docs/DOMAIN_REUSE.md. Drea
 Implemented: local working workspace, persistent scenario, treasury contract, tests, EOA live transaction preparation/reconciliation, read-only proposals, local EVM evidence and official MUSD read verification.
 
 Pending: funded Mezo treasury deployment, hosted durable app/PostgreSQL, public GitHub, testnet user receipt, customer invoice checkout, batch/recurring execution, Trove repay adapter, deck/pitch video and submission. Local tests and local EVM evidence do not establish those outcomes.
-

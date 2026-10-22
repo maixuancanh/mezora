@@ -7,4 +7,3 @@ while(!stopping){
  for(const space of spaces.rows){try{await reconcile(db,space.id);}catch(error){console.error("Receipt reconciliation failed",space.id,error instanceof Error?error.message:String(error));}}
  await new Promise(resolve=>setTimeout(resolve,10000));
 }await db.close();
-

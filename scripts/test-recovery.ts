@@ -12,4 +12,3 @@ const paidHash=await lostSend("pay");const paid=await snap();expect(paid.bills.f
 await p.request({method:"evm_revert" as any,params:[snapshotId] as any});
 const reverted=await snap();expect(reverted.bills.find((x:any)=>x.id===b.bill.id).status).toBe("payment_pending");expect(reverted.summary.reserved).toBe("25");
 await writeFile("docs/recovery-evidence.json",JSON.stringify({checkedAt:new Date().toISOString(),scope:"local Anvil only",checks:["reserve hash-loss backfill","pay hash-loss backfill","previously settled payment becomes pending after chain reorg"],reservedHash,paidHash,afterReorg:reverted.summary},null,2));console.log("PASS lost-hash recovery and reorg",reverted.summary);await api.dispose();
-

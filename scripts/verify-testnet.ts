@@ -6,4 +6,3 @@ const block=await p.getBlock();const [chainId,code,decimals,symbol]=await Promis
 if(chainId!==31611||!code||code==="0x"||decimals!==18)throw new Error("Mezo MUSD validation failed");
 const record={checkedAt:new Date().toISOString(),scope:"read-only live testnet; no transaction sent",chainId,token:officialTestnetMusd,decimals,symbol,blockNumber:block.number.toString(),blockHash:block.hash,tokenCodeBytes:(code.length-2)/2,source:"https://github.com/mezo-org/musd/blob/b51f6cb8e0f048770e32cb6ab5d704785e0b75b1/solidity/artifacts/deployments/matsnet/MUSD.json",networkSource:"https://mezo.org/docs/developers/getting-started/"};
 await mkdir("deployments",{recursive:true});await writeFile("deployments/testnet-token-verification.json",JSON.stringify(record,null,2));console.log(record);
-

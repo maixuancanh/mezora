@@ -8,4 +8,3 @@ export function withProposal<T extends Data>(data:T,workspaceId:string){
  const config={version:1,now,maxSnapshotAgeSeconds:120,proposalTtlSeconds:60,operatingBufferBaseUnits:money(data.summary.buffer).toString(),minimumSurplusBaseUnits:money("1").toString()};
  try{const p=decide(snapshot,config);return {...data,proposal:p?{...p,amount:show(BigInt(p.amountBaseUnits)),mode:isDemo?"demo":"live"}:null};}catch{return {...data,proposal:null};}
 }
-

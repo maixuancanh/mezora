@@ -1,0 +1,254 @@
+{
+  "date": "2026-10-23",
+  "mode": "passive unauthenticated browser inspection; no wallet extension, no signing",
+  "pages": [
+    {
+      "path": "/setup",
+      "url": "https://mezora.vercel.app/setup",
+      "title": "Mezora — Business treasury",
+      "scripts": [
+        "https://mezora.vercel.app/_next/static/immutable/chunks/098rdl-ja3g5l.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/2p-3e8r1feswt.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/turbopack-1byz1flvc-bu1.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/00z4pmesk2f4f.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/1rvljg_q_kgkt.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/0c0hxoamwjsbw.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/1wb2qzc39lff_.js"
+      ]
+    },
+    {
+      "path": "/",
+      "url": "https://mezora.vercel.app/",
+      "title": "Mezora — Business treasury",
+      "scripts": [
+        "https://mezora.vercel.app/_next/static/immutable/chunks/098rdl-ja3g5l.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/2p-3e8r1feswt.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/turbopack-1byz1flvc-bu1.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/00z4pmesk2f4f.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/3dr5daa_ser7w.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/0zqxho5eykyvb.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/0c0hxoamwjsbw.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/1wb2qzc39lff_.js"
+      ]
+    },
+    {
+      "path": "/repay",
+      "url": "https://mezora.vercel.app/repay",
+      "title": "Mezora — Business treasury",
+      "scripts": [
+        "https://mezora.vercel.app/_next/static/immutable/chunks/098rdl-ja3g5l.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/2p-3e8r1feswt.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/turbopack-1byz1flvc-bu1.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/00z4pmesk2f4f.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/193rqhszuby-7.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/0cdgdnsv6tm8x.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/0c0hxoamwjsbw.js",
+        "https://mezora.vercel.app/_next/static/immutable/chunks/1wb2qzc39lff_.js"
+      ]
+    }
+  ],
+  "requestOrigins": [
+    "https://mezora.vercel.app",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com"
+  ],
+  "nonGet": [],
+  "errors": [],
+  "requests": [
+    {
+      "url": "https://mezora.vercel.app/setup",
+      "method": "GET",
+      "type": "document"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/3bnvq3304cjs1.css",
+      "method": "GET",
+      "type": "stylesheet"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/0f_f1a_4n9_r1.css",
+      "method": "GET",
+      "type": "stylesheet"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/1wb2qzc39lff_.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/098rdl-ja3g5l.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/2p-3e8r1feswt.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/turbopack-1byz1flvc-bu1.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/00z4pmesk2f4f.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/1rvljg_q_kgkt.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap",
+      "method": "GET",
+      "type": "stylesheet"
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggexSg.woff2",
+      "method": "GET",
+      "type": "font"
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K4.woff2",
+      "method": "GET",
+      "type": "font"
+    },
+    {
+      "url": "https://mezora.vercel.app/api/setup",
+      "method": "GET",
+      "type": "fetch"
+    },
+    {
+      "url": "https://mezora.vercel.app/",
+      "method": "GET",
+      "type": "document"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/3bnvq3304cjs1.css",
+      "method": "GET",
+      "type": "stylesheet"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/1wb2qzc39lff_.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/098rdl-ja3g5l.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/2p-3e8r1feswt.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/turbopack-1byz1flvc-bu1.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/00z4pmesk2f4f.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/3dr5daa_ser7w.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/0zqxho5eykyvb.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap",
+      "method": "GET",
+      "type": "stylesheet"
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K4.woff2",
+      "method": "GET",
+      "type": "font"
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggexSg.woff2",
+      "method": "GET",
+      "type": "font"
+    },
+    {
+      "url": "https://mezora.vercel.app/api/workspace?mode=demo",
+      "method": "GET",
+      "type": "fetch"
+    },
+    {
+      "url": "https://mezora.vercel.app/repay",
+      "method": "GET",
+      "type": "document"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/3bnvq3304cjs1.css",
+      "method": "GET",
+      "type": "stylesheet"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/2867qxifh7f7z.css",
+      "method": "GET",
+      "type": "stylesheet"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/1wb2qzc39lff_.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/098rdl-ja3g5l.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/2p-3e8r1feswt.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/turbopack-1byz1flvc-bu1.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/00z4pmesk2f4f.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/193rqhszuby-7.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://mezora.vercel.app/_next/static/immutable/chunks/0cdgdnsv6tm8x.js",
+      "method": "GET",
+      "type": "script"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap",
+      "method": "GET",
+      "type": "stylesheet"
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K4.woff2",
+      "method": "GET",
+      "type": "font"
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggexSg.woff2",
+      "method": "GET",
+      "type": "font"
+    }
+  ]
+}

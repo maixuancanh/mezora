@@ -2,18 +2,19 @@ import { randomBytes, createHash } from "node:crypto";
 import { cookies } from "next/headers";
 import { database } from "../../../../packages/db/src/database";
 import { getAddress, isAddress, verifyMessage } from "viem";
+import { createSignInMessage, validateSignInMessage } from "../lib/sign-in-message";
 const hash=(s:string)=>createHash("sha256").update(s).digest("hex");
 export async function challenge(address:string,originOverride?:string){
  if(!isAddress(address))throw new Error("Invalid wallet address.");
  const a=getAddress(address),nonce=randomBytes(20).toString("hex"),now=Date.now(),origin=originOverride||process.env.MEZORA_ORIGIN||"http://127.0.0.1:3210";
- const message=["Mezora wallet sign-in", "Origin: "+origin,"Address: "+a,"Chain ID: 31611","Nonce: "+nonce,"Issued at: "+new Date(now).toISOString(),"Expires at: "+new Date(now+300000).toISOString(),"This signature signs you in. It does not authorize payments."].join("\n");
+ const message=createSignInMessage(a,origin,nonce,new Date(now));
  const db=await database();await db.query("INSERT INTO challenges(id,address,message,expires_at) VALUES($1,$2,$3,$4)",[nonce,a.toLowerCase(),message,now+300000]);return {message};
 }
-export async function verifySession(address:string,signature:string,message:string){
+export async function verifySession(address:string,signature:string,message:string,origin:string){
  if(!isAddress(address)||typeof signature!=="string"||typeof message!=="string"||message.length>2000)throw new Error("Invalid sign-in request.");
- const db=await database(),a=getAddress(address);
+ const a=getAddress(address),parsed=validateSignInMessage(message,a,origin),db=await database();
  const found=await db.query<{id:string;expires_at:string;used:boolean}>("SELECT id,expires_at,used FROM challenges WHERE address=$1 AND message=$2 ORDER BY expires_at DESC LIMIT 1",[a.toLowerCase(),message]);
- const row=found.rows[0];if(!row||row.used||Number(row.expires_at)<Date.now())throw new Error("Sign-in request expired or already used.");
+ const row=found.rows[0];if(!row||row.used||Number(row.expires_at)<=Date.now()||parsed.nonce!==row.id||parsed.expirationTime?.getTime()!==Number(row.expires_at))throw new Error("Sign-in request expired or already used.");
  if(!await verifyMessage({address:a,message,signature:signature as `0x${string}`}))throw new Error("Wallet signature did not match.");
  const token=randomBytes(32).toString("hex");
  await db.transaction(async q=>{const result=await q.query("UPDATE challenges SET used=true WHERE id=$1 AND used=false AND expires_at>$2 RETURNING id",[row.id,Date.now()]);if(!result.rows.length)throw new Error("Sign-in request already used.");await q.query("INSERT INTO sessions(id,address,expires_at) VALUES($1,$2,$3)",[hash(token),a,Date.now()+86400000]);});

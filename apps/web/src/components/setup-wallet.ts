@@ -35,6 +35,16 @@ function isMezoChain(chain: unknown): boolean {
   return typeof chain === 'string' && /^0x[0-9a-f]+$/i.test(chain) && BigInt(chain) === 31611n;
 }
 
+export async function assertSetupWallet(p: SetupProvider, owner: string): Promise<void> {
+  const accounts = await p.request({ method: 'eth_accounts' });
+  if (!Array.isArray(accounts) || typeof accounts[0] !== 'string' || accounts[0].toLowerCase() !== owner.toLowerCase()) {
+    throw new Error('Your wallet account changed. Connect and review again.');
+  }
+  if (!isMezoChain(await p.request({ method: 'eth_chainId' }))) {
+    throw new Error('Your wallet network changed. Select Mezo Testnet and review again.');
+  }
+}
+
 export async function ensureSetupChain(p: SetupProvider): Promise<void> {
   if (isMezoChain(await p.request({ method: 'eth_chainId' }))) return;
   const switchChain = () => p.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x7b7b' }] });

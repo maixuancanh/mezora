@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-23",
+  "timezone": "Asia/Saigon",
+  "deployment_id": "dpl_GzubhVUxZpdnzA7X6LoiFFgRwJ1p",
+  "source_commit": "d068799",
+  "scans": [
+    {
+      "url": "https://mezora.vercel.app/setup",
+      "endpoint": "https://dapp-scanning.api.cx.metamask.io/v2/scan?url=https%3A%2F%2Fmezora.vercel.app%2Fsetup",
+      "http_status": 200,
+      "response": {
+        "hostname": "mezora.vercel.app",
+        "recommendedAction": "BLOCK"
+      },
+      "observed_at_utc": "2026-10-23T01:11:47.541Z"
+    },
+    {
+      "url": "https://mezora.vercel.app",
+      "endpoint": "https://dapp-scanning.api.cx.metamask.io/v2/scan?url=https%3A%2F%2Fmezora.vercel.app",
+      "http_status": 200,
+      "response": {
+        "hostname": "mezora.vercel.app",
+        "recommendedAction": "BLOCK"
+      },
+      "observed_at_utc": "2026-10-23T01:11:47.903Z"
+    }
+  ],
+  "scan_api_source": "https://github.com/MetaMask/core/blob/main/packages/phishing-controller/src/PhishingController.ts",
+  "classification_reason": "Not returned by public scan response",
+  "provider_attribution": "Not returned; do not assume Blockaid specifically",
+  "legacy_github_list": {
+    "source": "https://raw.githubusercontent.com/MetaMask/eth-phishing-detect/main/src/config.json",
+    "observed_commit": "4c9c5a7de1e4c930d681b9f7fe8b356ddc3e2257",
+    "exact_or_parent_blacklist_match": false,
+    "scope": "Not proof of absence from other live, fuzzy, path, hotlist, cached, or partner classifications"
+  },
+  "production_dependencies": {
+    "command": "npm audit --omit=dev --json",
+    "reported_vulnerabilities": 0,
+    "limit": "Dependency advisory coverage only"
+  },
+  "browser_evidence": "security-browser-inspection-2026-10-23.json",
+  "conclusion": "Confirmed live hostname BLOCK classification. No obvious wallet-draining behavior identified in inspected source and passive loaded pages. Not a full security audit or proof of false positive.",
+  "changes_to_site": [],
+  "wallet_signatures": 0,
+  "chain_transactions": 0,
+  "external_reports_submitted": 0
+}

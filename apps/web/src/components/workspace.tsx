@@ -2,6 +2,9 @@
 import { useCallback, useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { ArrowDownLeft, ArrowUpRight, ArrowRight, Bell, Building2, Check, ChevronDown, Copy, FileText, LayoutDashboard, LifeBuoy, Loader2, Plus, RefreshCw, Search, ShieldCheck, SlidersHorizontal, Sparkles, Wallet, X, Landmark, Activity, ExternalLink } from 'lucide-react';
+import { ensureSetupChain, assertSetupWallet, setupWalletError } from './setup-wallet';
+import { validateWorkspacePayload } from './wallet-payload';
+import { validateSignInMessage } from '../lib/sign-in-message';
 import { ScopeApprovalCard } from '../features/approvals/scope-card';
 
 type Mode = 'demo' | 'live';
@@ -31,11 +34,12 @@ export default function Workspace() {
   useEffect(() => { const p = provider(); const reset = () => { setAuthenticated(false); setWallet(''); setNotice('Wallet changed. Connect and sign in again.'); }; p?.on?.('accountsChanged', reset); p?.on?.('chainChanged', reset); return () => { p?.removeListener?.('accountsChanged', reset); p?.removeListener?.('chainChanged', reset); }; }, []);
   const ready = mode === 'demo' || Boolean(authenticated && wallet && data?.network?.treasuryAddress && data?.network?.tokenAddress);
   const currentBill = selected ? data?.bills.find(b => b.id === selected.id) || selected : null;
-  async function connect() { setBusy('wallet'); setError(''); try { const p = provider(); if (!p) throw new Error('No browser wallet found. Open Mezora in a browser with an Ethereum wallet extension.'); const accounts = await p.request({ method: 'eth_requestAccounts' }) as string[]; const address = accounts[0]; if (!address) throw new Error('No wallet account selected.'); setWallet(address); const challenge = await api(`/api/auth/challenge?address=${encodeURIComponent(address)}`); const signature = await p.request({ method: 'personal_sign', params: [challenge.message, address] }); await api('/api/auth/verify', { address, message: challenge.message, signature }); setAuthenticated(true); setNotice('Wallet connected and session authenticated.'); await refresh(); } catch (e) { setError(e instanceof Error ? e.message : 'Wallet connection rejected.'); } finally { setBusy(''); } }
+  async function connect() { setBusy('wallet'); setError(''); try { const p = provider(); if (!p) throw new Error('No browser wallet found. Open Mezora in a browser with an Ethereum wallet extension.'); const accounts = await p.request({ method: 'eth_requestAccounts' }) as string[]; const address = accounts[0]; if (!address) throw new Error('No wallet account selected.'); await ensureSetupChain(p); await assertSetupWallet(p, address); setWallet(address); const challenge = await api(`/api/auth/challenge?address=${encodeURIComponent(address)}`); validateSignInMessage(challenge.message, address, window.location.origin); await assertSetupWallet(p, address); const signature = await p.request({ method: 'personal_sign', params: [challenge.message, address] }); await api('/api/auth/verify', { address, message: challenge.message, signature }); setAuthenticated(true); setNotice('Wallet connected and session authenticated.'); await refresh(); } catch (e) { setError(e instanceof Error ? e.message : 'Wallet connection rejected.'); } finally { setBusy(''); } }
   async function execute(path: string, body: Record<string, unknown>) {
     const result = await api(path, { mode, ...body });
     if (result.transaction) {
       let sentHash: unknown;
+      let sendRequested = false;
       try {
         const p = provider();
         if (!p || !wallet || !authenticated) throw new Error('Connect and sign in to your wallet first.');
@@ -50,24 +54,28 @@ export default function Workspace() {
         if (!details || details.action !== expectedAction || result.action !== expectedAction || !amountMatches || typeof details.recipient !== 'string' || details.recipient.toLowerCase() !== expectedRecipient.toLowerCase() || details.chainId !== data.network.chainId || result.transaction.chainId !== data.network.chainId || typeof result.transaction.to !== 'string' || result.transaction.to.toLowerCase() !== expectedTarget.toLowerCase() || (result.transaction.value && BigInt(result.transaction.value) !== 0n)) {
           throw new Error('The prepared transaction differs from your review. No transaction was sent. Close this review and check the latest bill or treasury details.');
         }
-        const chain = await p.request({ method: 'eth_chainId' });
-        const chainId = `0x${BigInt(result.transaction.chainId).toString(16)}`;
-        if (chain !== chainId) await p.request({ method: 'wallet_switchEthereumChain', params: [{ chainId }] });
-        const { chainId: _chainId, ...transaction } = result.transaction;
+        const payloadContext = { action: expectedAction, amount: expectedAmount, recipient: expectedRecipient, owner: wallet, treasury: data.network.treasuryAddress, token: data.network.tokenAddress, bill: review.type === 'bill' ? review.bill : undefined };
+        validateWorkspacePayload(result, payloadContext);
+        await ensureSetupChain(p);
+        await assertSetupWallet(p, wallet);
+        const transaction = validateWorkspacePayload(result, payloadContext);
         setNotice('Waiting for your wallet signature.');
+        sendRequested = true;
         const txHash = await p.request({ method: 'eth_sendTransaction', params: [{ ...transaction, from: wallet }] });
+        if (typeof txHash !== 'string' || !/^0x[0-9a-fA-F]{64}$/.test(txHash)) throw new Error('Wallet returned an invalid transaction hash. Check wallet activity before retrying.');
         sentHash = txHash;
         await api(path, { mode, action: 'broadcast', intentId: result.intentId, txHash });
         setNotice(approval ? 'MUSD approval submitted. After confirmation, submit your deposit again.' : 'Transaction broadcast. Confirmation is pending; refresh to check its receipt.');
       } catch (error) {
-        if (!sentHash) await api(path, { mode, action: 'reject', intentId: result.intentId });
+        if (!sentHash && (!sendRequested || (error as { code?: number })?.code === 4001)) { try { await api(path, { mode, action: 'reject', intentId: result.intentId }); } catch { /* Preserve the original wallet error and prepared recovery state. */ } }
+        else if (!sentHash) setNotice('Wallet submission could not be confirmed. Keep this request pending and check wallet activity; refresh to recover its receipt before retrying.');
         else setNotice('Transaction sent: ' + String(sentHash) + '. Recording the broadcast failed; check its receipt before trying again.');
         throw error;
       }
     } else setNotice(mode === 'demo' ? 'Local scenario updated. No transaction was sent to a blockchain.' : 'Workspace updated.');
     await refresh();
   }
-  async function confirmReview() { if (!review) return; setBusy('action'); setError(''); try { if (review.type === 'bill') { const latest = data?.bills.find(b => b.id === review.bill.id); if (!latest || latest.version !== review.bill.version || latest.amount !== review.bill.amount || latest.recipient !== review.bill.recipient) throw new Error('This bill changed. Close this review and open the latest version.'); await execute(`/api/bills/${encodeURIComponent(review.bill.id)}/actions`, { action: review.action }); } else await execute('/api/treasury', { action: review.action, amount: review.amount }); setReview(null); } catch (e) { setError(e instanceof Error ? e.message : 'Action could not be completed.'); } finally { setBusy(''); } }
+  async function confirmReview() { if (!review) return; setBusy('action'); setError(''); try { if (review.type === 'bill') { const latest = data?.bills.find(b => b.id === review.bill.id); if (!latest || latest.version !== review.bill.version || latest.amount !== review.bill.amount || latest.recipient !== review.bill.recipient) throw new Error('This bill changed. Close this review and open the latest version.'); await execute(`/api/bills/${encodeURIComponent(review.bill.id)}/actions`, { action: review.action }); } else await execute('/api/treasury', { action: review.action, amount: review.amount }); setReview(null); } catch (e) { setError(setupWalletError(e, 'Reviewing transaction')); } finally { setBusy(''); } }
   async function createBill(event: FormEvent<HTMLFormElement>) { event.preventDefault(); const form = new FormData(event.currentTarget); setBusy('create'); setError(''); try { await api('/api/bills', { mode, vendor: form.get('vendor'), recipient: form.get('recipient'), amount: form.get('amount'), dueDate: form.get('dueDate') }); setCreate(false); setNotice('Bill created. Review its terms before reserving funds.'); await refresh(); } catch (e) { setError(e instanceof Error ? e.message : 'Could not create bill.'); } finally { setBusy(''); } }
   const bills = (data?.bills || []).filter(b => (!search || `${b.vendor} ${b.id}`.toLowerCase().includes(search.toLowerCase())) && (filter === 'All bills' || (filter === 'Pending' ? b.status.toLowerCase().includes('pending') : b.status.toLowerCase().includes(filter.toLowerCase())))).sort((a, b) => a.dueDate.localeCompare(b.dueDate));
   const attention = (data?.bills || []).filter(b => !['paid', 'cancelled', 'canceled'].includes(b.status.toLowerCase()));

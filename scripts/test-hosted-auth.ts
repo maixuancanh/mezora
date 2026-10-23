@@ -1,6 +1,6 @@
-import{request,expect}from"@playwright/test";import{generatePrivateKey,privateKeyToAccount}from"viem/accounts";import{writeFile}from"node:fs/promises";
+import{request,expect}from"@playwright/test";import{generatePrivateKey,privateKeyToAccount}from"viem/accounts";import{validateSignInMessage}from"../apps/web/src/lib/sign-in-message";import{writeFile}from"node:fs/promises";
 const base="https://mezora.vercel.app",account=privateKeyToAccount(generatePrivateKey()),api=await request.newContext({baseURL:base,extraHTTPHeaders:{origin:base}});
-const challenge=await(await api.get("/api/auth/challenge?address="+account.address)).json();expect(challenge.message).toContain("Origin: "+base);
+const challenge=await(await api.get("/api/auth/challenge?address="+account.address)).json();validateSignInMessage(challenge.message,account.address,base);
 const signature=await account.signMessage({message:challenge.message});const signed=await api.post("/api/auth/verify",{data:{address:account.address,message:challenge.message,signature}});expect(signed.status()).toBe(200);
 const replay=await api.post("/api/auth/verify",{data:{address:account.address,message:challenge.message,signature}});expect(replay.status()).toBe(400);
 const setup=await(await api.get("/api/setup")).json();expect(setup.ownerAddress.toLowerCase()).toBe(account.address.toLowerCase());expect(setup.deploymentReady).toBe(false);expect(setup.walletBtcBalance).toBe("0");expect(setup.tokenVerified).toBe(true);

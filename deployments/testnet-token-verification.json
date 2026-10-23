@@ -1,12 +1,12 @@
 {
-  "checkedAt": "2026-10-22T19:46:14.756Z",
+  "checkedAt": "2026-10-23T01:22:07.708Z",
   "scope": "read-only live testnet; no transaction sent",
   "chainId": 31611,
   "token": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
   "decimals": 18,
   "symbol": "MUSD",
-  "blockNumber": "16304180",
-  "blockHash": "0xd23c725860897ea6842b65758dd03ce72fc405ad71aafbb51b1f41cfba10634f",
+  "blockNumber": "16309025",
+  "blockHash": "0xcc8ecb75384ef7b8e551b477f2c031a41e139d9a8bbcd7c4571792b5fb7ba69d",
   "tokenCodeBytes": 6437,
   "source": "https://github.com/mezo-org/musd/blob/b51f6cb8e0f048770e32cb6ab5d704785e0b75b1/solidity/artifacts/deployments/matsnet/MUSD.json",
   "networkSource": "https://mezo.org/docs/developers/getting-started/"

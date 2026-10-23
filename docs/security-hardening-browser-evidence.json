@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-23",
+  "target": "https://mezora.vercel.app",
+  "scope": "Production UI with mocked wallet/auth/setup endpoints; no real signature or chain write",
+  "checks": [
+    "production CSP present",
+    "all HTML scripts have matching nonce",
+    "nonce changes per request",
+    "no CSP violations",
+    "unknown chain add then switch",
+    "tampered deployment blocked before wallet send",
+    "valid deployment reaches mock wallet",
+    "plain object 4001 visible"
+  ],
+  "errors": [],
+  "cspViolations": [],
+  "calls": [
+    "eth_requestAccounts",
+    "eth_chainId",
+    "wallet_switchEthereumChain",
+    "wallet_addEthereumChain",
+    "eth_chainId",
+    "wallet_switchEthereumChain",
+    "eth_chainId",
+    "eth_accounts",
+    "eth_chainId",
+    "personal_sign",
+    "eth_chainId",
+    "eth_accounts",
+    "eth_chainId",
+    "eth_accounts",
+    "eth_chainId",
+    "eth_accounts",
+    "eth_accounts",
+    "eth_chainId",
+    "eth_sendTransaction"
+  ]
+}

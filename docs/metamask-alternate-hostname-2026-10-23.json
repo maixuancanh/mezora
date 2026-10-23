@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-23",
+  "experiment": "Alternate hostname without the string mezora; same existing deployment and application content",
+  "alias": "https://cedar-business-demo.vercel.app/setup",
+  "deployment": "dpl_GzubhVUxZpdnzA7X6LoiFFgRwJ1p",
+  "scans": [
+    {
+      "input": "https://cedar-business-demo.vercel.app/setup",
+      "status": 200,
+      "result": {
+        "hostname": "cedar-business-demo.vercel.app",
+        "recommendedAction": "BLOCK"
+      },
+      "observedAt": "2026-10-23T01:19:48.004Z"
+    },
+    {
+      "input": "cedar-business-demo.vercel.app",
+      "status": 200,
+      "result": {
+        "hostname": "cedar-business-demo.vercel.app",
+        "recommendedAction": "BLOCK"
+      },
+      "observedAt": "2026-10-23T01:19:48.339Z"
+    },
+    {
+      "input": "mezora.vercel.app",
+      "status": 200,
+      "result": {
+        "hostname": "mezora.vercel.app",
+        "recommendedAction": "BLOCK"
+      },
+      "observedAt": "2026-10-23T01:19:48.663Z"
+    },
+    {
+      "input": "app.uniswap.org",
+      "status": 200,
+      "result": {
+        "hostname": "app.uniswap.org",
+        "recommendedAction": "VERIFIED"
+      },
+      "observedAt": "2026-10-23T01:19:48.986Z"
+    }
+  ],
+  "limits": [
+    "Application branding still says Mezora; this isolates the hostname only.",
+    "Alias not enabled for authenticated application mutations.",
+    "No wallet signing or chain transaction.",
+    "No evidence that a hostname change resolves the warning.",
+    "Scan API does not provide classification reasons."
+  ]
+}

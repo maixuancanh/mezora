@@ -2,6 +2,10 @@
 
 Business cash flow on Mezo: bills, reserved MUSD budgets, owner-approved payments and receipt reconciliation.
 
+Live app: https://mezora.vercel.app · Treasury setup: https://mezora.vercel.app/setup · Trove repayment: https://mezora.vercel.app/repay
+
+The hosted app uses dedicated Neon PostgreSQL. Owner deployment and repayment require signatures in the connected wallet; current evidence is recorded in docs/hosted-deployment-evidence.json.
+
 ## Run locally
 
 Requires Node24 (tested24.14.1), npm and optionally Foundry.

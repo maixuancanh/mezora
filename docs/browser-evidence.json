@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-22T19:53:41.968Z",
-  "url": "http://127.0.0.1:3210",
+  "checkedAt": "2026-10-23T00:58:07.841Z",
+  "url": "https://mezora.vercel.app",
   "checks": [
     "create/verify/reserve/pay",
     "surplus conservation",

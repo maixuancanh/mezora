@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-10-23T00:58:51.043Z",
+  "url": "https://mezora.vercel.app",
+  "scope": "ephemeral zero-fund EOA signs login only; no blockchain writes",
+  "checks": [
+    "hosted domain bound login",
+    "signature nonce replay denied",
+    "owner session persists in dedicated SQL",
+    "verified MUSD read",
+    "zero gas blocks deployment preparation",
+    "authenticated Trove+repayment list"
+  ]
+}

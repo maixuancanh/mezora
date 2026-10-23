@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-22T20:13:58.707Z",
-  "url": "http://127.0.0.1:3210",
+  "checkedAt": "2026-10-23T00:58:15.260Z",
+  "url": "https://mezora.vercel.app",
   "checks": [
     "setup verified MUSD read",
     "setup no wallet autoexecution",
@@ -9,5 +9,5 @@
     "repay390px no overflow"
   ],
   "pageErrors": [],
-  "scope": "local app + read-only real Mezo data"
+  "scope": "hosted app + read-only real Mezo data"
 }

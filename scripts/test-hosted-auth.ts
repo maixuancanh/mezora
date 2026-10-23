@@ -1,0 +1,10 @@
+import{request,expect}from"@playwright/test";import{generatePrivateKey,privateKeyToAccount}from"viem/accounts";import{writeFile}from"node:fs/promises";
+const base="https://mezora.vercel.app",account=privateKeyToAccount(generatePrivateKey()),api=await request.newContext({baseURL:base,extraHTTPHeaders:{origin:base}});
+const challenge=await(await api.get("/api/auth/challenge?address="+account.address)).json();expect(challenge.message).toContain("Origin: "+base);
+const signature=await account.signMessage({message:challenge.message});const signed=await api.post("/api/auth/verify",{data:{address:account.address,message:challenge.message,signature}});expect(signed.status()).toBe(200);
+const replay=await api.post("/api/auth/verify",{data:{address:account.address,message:challenge.message,signature}});expect(replay.status()).toBe(400);
+const setup=await(await api.get("/api/setup")).json();expect(setup.ownerAddress.toLowerCase()).toBe(account.address.toLowerCase());expect(setup.deploymentReady).toBe(false);expect(setup.walletBtcBalance).toBe("0");expect(setup.tokenVerified).toBe(true);
+const denied=await api.post("/api/setup",{data:{action:"prepare"}});expect(denied.status()).toBe(400);
+const trove=await(await api.get("/api/trove")).json();expect(trove.snapshot.status).toBe("nonexistent");expect(trove.repayments).toHaveLength(0);
+await writeFile("docs/hosted-auth-evidence.json",JSON.stringify({checkedAt:new Date().toISOString(),url:base,scope:"ephemeral zero-fund EOA signs login only; no blockchain writes",checks:["hosted domain bound login","signature nonce replay denied","owner session persists in dedicated SQL","verified MUSD read","zero gas blocks deployment preparation","authenticated Trove+repayment list"]},null,2));console.log("PASS hosted auth and zero-fund gates");await api.dispose();
+

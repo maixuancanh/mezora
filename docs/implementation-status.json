@@ -1,38 +1,43 @@
 {
-  "updated_at": "2026-10-22T19:51:55.787Z",
+  "updated_at": "2026-10-23T00:59:55.624Z",
   "project": "Mezora",
   "root": "D:/bitgethackathon/products/mezora",
   "branch": "build/mezora-mvp",
   "local_url": "http://127.0.0.1:3210",
   "phases": {
-    "P0": "official MUSD read verified; treasury deployment pending",
+    "P0": "official MUSD verified; owner now funded0.05BTC testnet; user treasury signature pending",
     "P1": "contract and invariant tests pass",
     "P2": "persistent PostgreSQL/PGlite workspace, EOA auth, exact requests and receipt recovery implemented",
     "P3": "UI browser flow and390px mobile verified",
-    "P4": "read-only buffer/surplus proposal integrated; Trove repay pending",
-    "P5": "not published or submitted",
+    "P4": "Trove reader and owner repayment adapter/UI implemented; actual owner has no active Trove; successful repayment execution unverified",
+    "P5": "hosted app and dedicated SQL verified; public repository pushed; owner treasury, deck/video and submission pending",
     "P6": "future"
   },
   "evidence": {
-    "unit_tests": 28,
+    "unit_tests": 41,
     "contract_tests": 18,
     "browser": "docs/browser-evidence.json",
     "local_evm": "docs/local-evm-evidence.json",
     "recovery": "docs/recovery-evidence.json",
     "official_token": "deployments/testnet-token-verification.json",
-    "duplicate_recovery": "docs/duplicate-recovery-evidence.json"
+    "duplicate_recovery": "docs/duplicate-recovery-evidence.json",
+    "hosted": "docs/hosted-deployment-evidence.json",
+    "setup_local": "docs/setup-local-evidence.json",
+    "setup_repay_browser": "docs/setup-repay-browser-evidence.json"
   },
   "external_state": {
     "testnet_treasury_deployed": false,
-    "hosted": false,
-    "public_repo": false,
+    "hosted": true,
+    "public_repo": true,
     "submitted": false
   },
   "remaining": [
-    "Funded owner wallet path for Mezo deployment",
-    "Hosted durable app/PostgreSQL",
-    "Actual Mezo testnet treasury transaction evidence",
-    "Deck/video/public repository/submission"
+    "Owner wallet signature on /setup for treasury deployment",
+    "MUSD testnet funding and actual treasury payment receipt",
+    "Actual active borrower repayment evidence",
+    "Deck/pitch video/submission"
   ],
-  "no_credentials_stored": true
+  "hosted_url": "https://mezora.vercel.app",
+  "public_repo": "https://github.com/maixuancanh/mezora",
+  "owner_private_key_stored": false
 }

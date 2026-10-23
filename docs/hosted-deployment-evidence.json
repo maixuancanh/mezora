@@ -1,0 +1,47 @@
+{
+  "verified_on": "2026-10-23",
+  "timezone": "Asia/Saigon",
+  "url": "https://mezora.vercel.app",
+  "deployment_id": "dpl_864hWTnuVWE6eVuTWhYWwyhpWvGz",
+  "deployment_url": "https://mezora-6vowt115m-vancongabc955-5514s-projects.vercel.app",
+  "state": "READY",
+  "public_repo": "https://github.com/maixuancanh/mezora",
+  "source_commit": "7edda8a",
+  "database": {
+    "provider": "Neon",
+    "resource": "store_RzykU8UhBi8ApPCb",
+    "plan": "free_v3",
+    "dedicated_to": "Mezora",
+    "durability": "external PostgreSQL",
+    "secret_exposure": false
+  },
+  "checks": [
+    "public app/API200",
+    "hosted scenario create verify reserve pay",
+    "surplus conservation",
+    "origin rejection",
+    "session isolation",
+    "reload persistence",
+    "390px no overflow",
+    "MUSD live read",
+    "actual owner nonexistent Trove",
+    "wallet-signin offchain ephemeral address",
+    "login replay denied"
+  ],
+  "chain_mutations_by_agent": 0,
+  "actual_owner": {
+    "address": "0x6A613e758D77c46B6E74971F7481dd66b59fE33a",
+    "btc_testnet": "0.05",
+    "musd": "0",
+    "observed_block": "16308695",
+    "treasury_deployment": "awaiting user wallet signature"
+  },
+  "limits": [
+    "No Mezo treasury transaction receipt yet",
+    "No actual owner repayment",
+    "Fork repayment verification did not complete: deployed PriceFeed.fetchPrice reverted under Anvil per attempted run; no successful fork evidence asserted",
+    "Vercel automatic Git link unavailable: account GitHub Login Connection missing; deployment via authenticated CLI",
+    "No always-on worker on Vercel; reconciliation on workspace reads",
+    "Deck/pitch/submission remain outstanding"
+  ]
+}

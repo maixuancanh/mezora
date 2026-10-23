@@ -7,4 +7,3 @@ const setup=await(await api.get("/api/setup")).json();expect(setup.ownerAddress.
 const denied=await api.post("/api/setup",{data:{action:"prepare"}});expect(denied.status()).toBe(400);
 const trove=await(await api.get("/api/trove")).json();expect(trove.snapshot.status).toBe("nonexistent");expect(trove.repayments).toHaveLength(0);
 await writeFile("docs/hosted-auth-evidence.json",JSON.stringify({checkedAt:new Date().toISOString(),url:base,scope:"ephemeral zero-fund EOA signs login only; no blockchain writes",checks:["hosted domain bound login","signature nonce replay denied","owner session persists in dedicated SQL","verified MUSD read","zero gas blocks deployment preparation","authenticated Trove+repayment list"]},null,2));console.log("PASS hosted auth and zero-fund gates");await api.dispose();
-

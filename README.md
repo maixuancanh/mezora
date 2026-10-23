@@ -22,8 +22,8 @@ Official chain31611, BTC gas. MUSD address independently checked read-only:
 See deployments/testnet-token-verification.json for block/source/code evidence. This is token verification, not a Mezora deployment.
 
 1. Build contracts with Foundry: `forge build --root contracts`.
-2. Deploy MezoraTreasury(token, owner) using the owner wallet on Mezo Testnet.
-3. Set apps/web/.env.local from root .env.example, including MEZORA_TREASURY_ADDRESS, MEZORA_ORIGIN and optional DATABASE_URL. Use full absolute MEZORA_DATA_DIR if running services from different directories.
+2. Open /setup, sign in with the owner wallet, review deployment and approve it in the wallet; registration verifies exact creation calldata and runtime. Existing treasury connection is also supported.
+3. Local: set apps/web/.env.local from root .env.example as needed. Treasury bindings persist per owner; MEZORA_TREASURY_ADDRESS remains an optional operator fallback. Hosted: dedicated PostgreSQL DATABASE_URL is required. Use full absolute MEZORA_DATA_DIR if running services from different directories.
 4. Restart web. Select Mezo Testnet, connect injected EOA wallet and sign nonce-bound login.
 5. Deposit first prompts exact MUSD allowance if needed; after confirmation, submit deposit again. Owner signs each action; application stores no owner private key.
 
@@ -81,4 +81,4 @@ See docs/THIRD_PARTY_NOTICES.md, docs/UI_REUSE.md and docs/DOMAIN_REUSE.md. Drea
 
 Implemented: local working workspace, persistent scenario, treasury contract, tests, EOA live transaction preparation/reconciliation, read-only proposals, local EVM evidence and official MUSD read verification.
 
-Pending: funded Mezo treasury deployment, hosted durable app/PostgreSQL, public GitHub, testnet user receipt, customer invoice checkout, batch/recurring execution, Trove repay adapter, deck/pitch video and submission. Local tests and local EVM evidence do not establish those outcomes.
+Next phase: /setup, /repay and dedicated SQL are implemented; see docs/next-phase-2026-10-23.md and implementation-status.json for current hosted/live evidence. Customer checkout, batch/recurring execution and submission materials remain planned. Local tests do not establish an owner testnet transaction.

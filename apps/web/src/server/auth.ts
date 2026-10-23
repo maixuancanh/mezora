@@ -3,9 +3,9 @@ import { cookies } from "next/headers";
 import { database } from "../../../../packages/db/src/database";
 import { getAddress, isAddress, verifyMessage } from "viem";
 const hash=(s:string)=>createHash("sha256").update(s).digest("hex");
-export async function challenge(address:string){
+export async function challenge(address:string,originOverride?:string){
  if(!isAddress(address))throw new Error("Invalid wallet address.");
- const a=getAddress(address),nonce=randomBytes(20).toString("hex"),now=Date.now(),origin=process.env.MEZORA_ORIGIN||"http://127.0.0.1:3210";
+ const a=getAddress(address),nonce=randomBytes(20).toString("hex"),now=Date.now(),origin=originOverride||process.env.MEZORA_ORIGIN||"http://127.0.0.1:3210";
  const message=["Mezora wallet sign-in", "Origin: "+origin,"Address: "+a,"Chain ID: 31611","Nonce: "+nonce,"Issued at: "+new Date(now).toISOString(),"Expires at: "+new Date(now+300000).toISOString(),"This signature signs you in. It does not authorize payments."].join("\n");
  const db=await database();await db.query("INSERT INTO challenges(id,address,message,expires_at) VALUES($1,$2,$3,$4)",[nonce,a.toLowerCase(),message,now+300000]);return {message};
 }

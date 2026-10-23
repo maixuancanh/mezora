@@ -1,0 +1,61 @@
+name: mezora
+
+x-app-environment: &app-environment
+  NODE_ENV: production
+  DATABASE_URL: postgresql://mezora:${POSTGRES_PASSWORD:?Set a private URL-safe POSTGRES_PASSWORD in .env}@postgres:5432/mezora
+  MEZORA_ORIGIN: ${MEZORA_ORIGIN:-http://127.0.0.1:3210}
+  MEZO_RPC_URL: ${MEZO_RPC_URL:-https://rpc.test.mezo.org}
+  MUSD_ADDRESS: ${MUSD_ADDRESS:-}
+  MEZORA_TREASURY_ADDRESS: ${MEZORA_TREASURY_ADDRESS:-}
+  MEZORA_DEPLOYMENT_BLOCK: ${MEZORA_DEPLOYMENT_BLOCK:-}
+  MEZORA_CONFIRMATIONS: ${MEZORA_CONFIRMATIONS:-2}
+
+services:
+  postgres:
+    image: postgres:17-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mezora
+      POSTGRES_USER: mezora
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a private URL-safe POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mezora -d mezora"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  web:
+    image: mezora:local
+    build: .
+    restart: unless-stopped
+    init: true
+    environment: *app-environment
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:3210:3210"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3210/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+
+  worker:
+    image: mezora:local
+    build: .
+    restart: unless-stopped
+    init: true
+    environment: *app-environment
+    command: ["node", "node_modules/tsx/dist/cli.mjs", "apps/worker/src/main.ts"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+
+volumes:
+  postgres-data:

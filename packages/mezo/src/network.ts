@@ -2,16 +2,16 @@ import { createPublicClient, http, defineChain, erc20Abi, getAddress, isAddress,
 import { treasuryAbi } from "./treasury-abi";
 export const officialTestnetMusd="0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503" as const;
 export const mezoTestnet=defineChain({id:31611,name:"Mezo Testnet",nativeCurrency:{name:"Bitcoin",symbol:"BTC",decimals:18},rpcUrls:{default:{http:["https://rpc.test.mezo.org"]}},blockExplorers:{default:{name:"Mezo Explorer",url:"https://explorer.test.mezo.org"}}});
-export function chainConfig(){
+export function chainConfig(treasuryOverride?:string){
  const token=process.env.MUSD_ADDRESS||officialTestnetMusd;
- const treasury=process.env.MEZORA_TREASURY_ADDRESS;
+ const treasury=treasuryOverride||process.env.MEZORA_TREASURY_ADDRESS;
  if(!isAddress(token))throw new Error("Invalid configured MUSD address.");
  if(treasury&&!isAddress(treasury))throw new Error("Invalid configured treasury address.");
  return {token:getAddress(token),treasury:treasury?getAddress(treasury):null,chainId:31611,explorerUrl:"https://explorer.test.mezo.org"};
 }
 export const publicClient=()=>createPublicClient({chain:mezoTestnet,transport:http(process.env.MEZO_RPC_URL||mezoTestnet.rpcUrls.default.http[0],{timeout:10000,retryCount:1})});
-export async function readTreasury(owner?:string){
- const c=chainConfig();if(!c.treasury)throw new Error("Treasury not configured. Deploy your treasury on Mezo Testnet and set MEZORA_TREASURY_ADDRESS.");
+export async function readTreasury(owner?:string,treasuryOverride?:string){
+ const c=chainConfig(treasuryOverride);if(!c.treasury)throw new Error("Treasury not configured. Open treasury setup to deploy or connect your Mezo Testnet treasury.");
  const p=publicClient();
  if(await p.getChainId()!==31611)throw new Error("RPC returned the wrong chain.");
  const block=await p.getBlock();const blockNumber=block.number;

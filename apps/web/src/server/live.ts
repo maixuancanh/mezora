@@ -5,6 +5,7 @@ import { ensureWorkspace, getBill, saveBill, rawSnapshot, money, show, log, type
 import { chainConfig, publicClient, readTreasury, treasuryData, approvalData } from "../../../../packages/mezo/src/network";
 import { treasuryAbi } from "../../../../packages/mezo/src/treasury-abi";
 import {createApprovalHash} from "../../../../packages/domain/src/payment-intent";
+import {effectiveConfig,namespaceConfig} from "./treasury-config";
 interface Intent {id:string;action:string;billId?:string;from:string;to:`0x${string}`;data:`0x${string}`;chainId:number;createdAt:number;expiresAt:number;state:"prepared"|"broadcast"|"confirmed"|"reverted";amount?:string;recipient?:string;deadline?:number;txHash?:string;previousStatus?:string;error?:string;blockHash?:string;blockNumber?:string;approvalHash?:string;preparedBlock?:string}
 async function createIntent(q:Sql,ns:string,body:Omit<Intent,"id"|"createdAt"|"expiresAt"|"state">){
  const existing=await q.query<{body:Intent}>("SELECT body FROM intents WHERE workspace_id=$1 AND entity_id=$2 AND action=$3 AND body->>'state' IN ('prepared','broadcast')",[ns,body.billId||body.action,body.action]);
@@ -29,7 +30,7 @@ async function createIntent(q:Sql,ns:string,body:Omit<Intent,"id"|"createdAt"|"e
 function intentResponse(i:Intent){if(i.state==="broadcast")throw new Error("A transaction is already pending. Refresh to reconcile it before retrying.");return {intentId:i.id,transaction:{to:i.to,data:i.data,value:"0x0",chainId:i.chainId},expiresAt:i.expiresAt,action:i.action,review:{action:i.action,amount:i.amount,recipient:i.recipient,chainId:i.chainId}};}
 export async function prepareBillAction(db:Database,ns:string,owner:string,id:string,action:string){
  const recovery=await reconcile(db,ns);if(recovery.recovered)return {recovered:true};
- const chain=await readTreasury(owner);
+ const chain=await readTreasury(owner,(await effectiveConfig(db,owner)).treasury||undefined);
  return db.transaction(async q=>{
   await ensureWorkspace(q,ns,"live");await q.query("SELECT id FROM workspaces WHERE id=$1 FOR UPDATE",[ns]);const b=await getBill(q,ns,id,true);
   if(action==="verify"){if(b.status!=="draft")throw new Error("Bill already verified or canceled.");b.status="verified";await saveBill(q,ns,b);await log(q,ns,"Bill verified",b.vendor,"verified");return {bill:b};}
@@ -51,7 +52,7 @@ export async function prepareBillAction(db:Database,ns:string,owner:string,id:st
 }
 export async function prepareTreasuryAction(db:Database,ns:string,owner:string,action:string,amount:string){
  const recovery=await reconcile(db,ns);if(recovery.recovered)return {recovered:true};
- const chain=await readTreasury(owner),n=money(amount);
+ const chain=await readTreasury(owner,(await effectiveConfig(db,owner)).treasury||undefined),n=money(amount);
  if(action!=="buffer"&&n<=0n)throw new Error("Amount must be positive.");
  return db.transaction(async q=>{
  await ensureWorkspace(q,ns,"live");await q.query("SELECT id FROM workspaces WHERE id=$1 FOR UPDATE",[ns]);
@@ -93,7 +94,7 @@ export async function rejectPrepared(db:Database,ns:string,owner:string,intentId
  });
 }
 export async function reconcile(db:Database,ns:string){
- const config=chainConfig();if(!config.treasury)return {status:"not_configured",lastCheckedAt:null,recovered:false};
+ const config=await namespaceConfig(db,ns);if(!config.treasury)return {status:"not_configured",lastCheckedAt:null,recovered:false};
  const client=publicClient();
  let recovered=false;
  const unsigned=await db.query<{id:string;body:Intent}>("SELECT id,body FROM intents WHERE workspace_id=$1 AND body->>'state'='prepared'",[ns]);
@@ -183,7 +184,7 @@ export async function reconcile(db:Database,ns:string){
  return {status:"on_demand",lastCheckedAt:new Date().toISOString(),recovered};
 }
 export async function liveSnapshot(db:Database,ns:string,owner:string){
- const worker=await reconcile(db,ns),c=await readTreasury(owner),s=await db.transaction(q=>rawSnapshot(q,ns,"live",c.balance,c.reserved));
+ const worker=await reconcile(db,ns),c=await readTreasury(owner,(await effectiveConfig(db,owner)).treasury||undefined),s=await db.transaction(q=>rawSnapshot(q,ns,"live",c.balance,c.reserved));
  const buffer=money(s.summary.buffer),extra=c.available>buffer?c.available-buffer:0n;
  return {...s,walletAddress:owner,network:{...s.network,tokenAddress:c.token,treasuryAddress:c.treasury},summary:{balance:show(c.balance),reserved:show(c.reserved),available:show(c.available),buffer:show(buffer),surplus:show(extra)},worker,gasBalance:c.gas.toString(),blockNumber:c.block.number?.toString(),blockHash:c.block.hash,observedAt:Number(c.block.timestamp)};
 }

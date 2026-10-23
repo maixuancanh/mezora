@@ -1,0 +1,14 @@
+import{readFile,writeFile}from"node:fs/promises";import{request,expect}from"@playwright/test";import{createWalletClient,createPublicClient,http}from"viem";import{mnemonicToAccount}from"viem/accounts";import{mezoTestnet}from"../packages/mezo/src/network";
+const cfg=JSON.parse(await readFile(".data/local-evm.json","utf8")),base="http://127.0.0.1:3211",account=mnemonicToAccount("test test test test test test test test test test test junk"),wallet=createWalletClient({account,chain:mezoTestnet,transport:http(cfg.rpc)}),p=createPublicClient({transport:http(cfg.rpc)}),api=await request.newContext({baseURL:base,extraHTTPHeaders:{origin:base}});
+async function post(body:unknown){const r=await api.post("/api/setup",{data:body}),j=await r.json();if(!r.ok())throw new Error(JSON.stringify(j));return j;}
+const unauth=await api.post("/api/setup",{data:{action:"prepare"}});expect(unauth.status()).toBe(401);
+const c=await(await api.get("/api/auth/challenge?address="+account.address)).json();const signin=await api.post("/api/auth/verify",{data:{address:account.address,message:c.message,signature:await account.signMessage({message:c.message})}});expect(signin.status()).toBe(200);
+const before=await(await api.get("/api/setup")).json();expect(before.treasuryAddress).toBe(null);expect(before.tokenVerified).toBe(true);
+const fake=await api.post("/api/setup",{data:{action:"connect",treasuryAddress:cfg.token}});expect(fake.status()).toBe(400);
+const prepared=await post({action:"prepare"});expect(prepared.transaction).not.toHaveProperty("to");expect(prepared.ownerAddress.toLowerCase()).toBe(account.address.toLowerCase());
+const hash=await wallet.sendTransaction({data:prepared.transaction.data,value:0n});await p.waitForTransactionReceipt({hash});
+const registered=await post({action:"register",txHash:hash});expect(registered.status).toBe("confirmed");
+const state=await(await api.get("/api/workspace?mode=live")).json();expect(state.network.treasuryAddress.toLowerCase()).toBe(registered.treasuryAddress.toLowerCase());expect(state.summary.balance).toBe("0");
+const duplicate=await post({action:"register",txHash:hash});expect(duplicate.treasuryAddress).toBe(registered.treasuryAddress);
+const changed=await api.post("/api/setup",{data:{action:"connect",treasuryAddress:cfg.treasury}});expect(changed.status()).toBe(400);
+await writeFile("docs/setup-local-evidence.json",JSON.stringify({checkedAt:new Date().toISOString(),scope:"local Anvil only, not Mezo deployment",checks:["unauth creation denied","fake existing bytecode rejected","unsigned constructor bound to owner+token","owner wallet creates treasury","canonical receipt registration persisted","live workspace uses perowner treasury","registration idempotent","switching active treasury blocked"],owner:account.address,treasury:registered.treasuryAddress,txHash:hash},null,2));console.log("PASS self-service setup 8 local EVM checks",registered.treasuryAddress);await api.dispose();

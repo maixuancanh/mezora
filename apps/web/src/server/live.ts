@@ -60,6 +60,8 @@ export async function prepareTreasuryAction(db:Database,ns:string,owner:string,a
  if(!["deposit","withdraw"].includes(action))throw new Error("Unknown treasury action.");
  if(action==="withdraw"&&n>chain.available)throw new Error("Cannot withdraw funds reserved for bills.");
  if(action==="deposit"){
+  const walletBalance=await publicClient().readContract({address:chain.token,abi:erc20Abi,functionName:"balanceOf",args:[owner as `0x${string}`],blockNumber:chain.block.number});
+  if(walletBalance<n)throw new Error(`Your wallet has ${show(walletBalance)} MUSD on Mezo Testnet, but this deposit requires ${show(n)} MUSD. Fund the connected owner wallet with testnet MUSD first. A token approval does not add funds.`);
   const allowance=await publicClient().readContract({address:chain.token,abi:erc20Abi,functionName:"allowance",args:[owner as `0x${string}`,chain.treasury!]});
   if(allowance<n){return createIntent(q,ns,{action:"approve",amount:show(n),recipient:chain.treasury!,from:owner,to:chain.token,data:approvalData(chain.treasury!,n),chainId:31611});}
  }

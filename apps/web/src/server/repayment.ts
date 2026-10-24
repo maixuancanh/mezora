@@ -1,5 +1,5 @@
 import{randomUUID}from"node:crypto";
-import{type Address,type Hex,isHash}from"viem";
+import{type Address,type Hex,isHash,TransactionNotFoundError}from"viem";
 import{type Database, type Sql}from"../../../../packages/db/src/database";
 import{ensureWorkspace,money,show}from"../../../../packages/db/src/workspace";
 import{publicClient}from"../../../../packages/mezo/src/network";
@@ -52,5 +52,5 @@ export async function prepareRepayment(db:Database,owner:string,amount:string,pr
 }
 export async function broadcastRepayment(db:Database,owner:string,id:string,hash:string){
  if(!isHash(hash))throw new Error("Invalid repayment transaction hash.");
- return db.transaction(async q=>{const r=await q.query<{body:RepayIntent}>("SELECT body FROM repayments WHERE id=$1 AND owner=$2 FOR UPDATE",[id,owner.toLowerCase()]);const i=r.rows[0]?.body;if(!i)throw new Error("Repayment not found.");if(!["prepared","pending"].includes(i.status))throw new Error("Repayment already settled.");const tx=await publicClient().getTransaction({hash});if(tx.from.toLowerCase()!==owner.toLowerCase()||tx.to?.toLowerCase()!==troveDeployment.borrowerOperations.toLowerCase()||tx.input.toLowerCase()!==i.data.toLowerCase()||tx.nonce!==i.nonce||tx.value!==0n)throw new Error("Transaction does not match the pinned repayment.");i.status="pending";i.txHash=hash;await q.query("UPDATE repayments SET body=$1::jsonb,tx_hash=$2 WHERE id=$3",[JSON.stringify(i),hash,id]);return{status:"pending",txHash:hash};});
+ return db.transaction(async q=>{const r=await q.query<{body:RepayIntent}>("SELECT body FROM repayments WHERE id=$1 AND owner=$2 FOR UPDATE",[id,owner.toLowerCase()]);const i=r.rows[0]?.body;if(!i)throw new Error("Repayment not found.");if(!["prepared","pending"].includes(i.status))throw new Error("Repayment already settled.");let tx;try{tx=await publicClient().getTransaction({hash});}catch(error){if(!(error instanceof TransactionNotFoundError))throw error;}if(tx&&(tx.from.toLowerCase()!==owner.toLowerCase()||tx.to?.toLowerCase()!==troveDeployment.borrowerOperations.toLowerCase()||tx.input.toLowerCase()!==i.data.toLowerCase()||tx.nonce!==i.nonce||tx.value!==0n))throw new Error("Transaction does not match the pinned repayment.");if(i.txHash&&i.txHash.toLowerCase()!==hash.toLowerCase())throw new Error("A different repayment hash is already recorded. Recover its receipt before retrying.");i.status="pending";i.txHash=hash;await q.query("UPDATE repayments SET body=$1::jsonb,tx_hash=$2 WHERE id=$3",[JSON.stringify(i),hash,id]);return{status:"pending",txHash:hash};});
 }

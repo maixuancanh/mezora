@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-24T21:27:46.915Z",
+  "chainId": 31611,
+  "config": {
+    "owner": "0x2c7ffa7b22b5d75b390f7bca5d75be0475c85b31",
+    "reviewers": [
+      "0x018afe2be696274bcb3a33b2fb1487f96f649bd6"
+    ],
+    "quorum": 1,
+    "maxSpend": "100",
+    "minimumBuffer": "0"
+  },
+  "estimatedGas": "1740144",
+  "ownerEoa": true,
+  "reviewerEoa": true,
+  "walletBtc": "0.0199999996356587",
+  "walletMusd": "1699",
+  "status": "read-only preflight; unsigned; no deployment broadcast",
+  "acceptance": {
+    "receivableReference": "TEST-AR-20261025-01",
+    "receivableAmount": "1",
+    "receivableStatus": "issued via authenticated owner browser; not paid yet",
+    "withdrawalToRepayment": "not sent",
+    "v2Deployment": "not sent",
+    "reviewer": "0x018afe2be696274bcb3a33b2fb1487f96f649bd6",
+    "quorum": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "verifiedAt": "2026-10-24T21:36:50.670Z",
+  "chainId": 31611,
+  "reference": "TEST-AR-20261025-01",
+  "hash": "0xb42f2f246d6149f3bcb315f255b24efe2d9df200f9facaa2ab26bf3f83eabee1",
+  "status": "success",
+  "blockNumber": "16347269",
+  "blockHash": "0x649beb36c95b351ed2170e6c8265ace8c4a6228ed37e21240c870ad0d93d7783",
+  "logIndex": 0,
+  "token": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+  "from": "0x2c7FFA7b22B5D75b390f7BCA5D75bE0475C85b31",
+  "to": "0xb06cFA71F295922B96501c34744ACf87Afa00351",
+  "amountBaseUnits": "1000000000000000000",
+  "amount": "1",
+  "allocation": {
+    "evidence": "authenticated owner browser showed received; received 1 MUSD / outstanding 0 MUSD",
+    "status": "received"
+  },
+  "scope": "testnet self-funded workflow acceptance; not customer adoption or revenue"
+}

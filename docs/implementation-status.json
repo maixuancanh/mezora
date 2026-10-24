@@ -97,14 +97,24 @@
         "authenticated PNG upload → CPU OCR → cited review → draft using a disposable EOA session",
         "two independent disposable EOA SIWE sessions → invite → accept → request → reviewer vote via hosted API"
       ],
-      "live_statement": "canonical reconciled testnet block 16344420; 100 to 99 MUSD; one unclassified transfer"
+      "live_statement": "canonical reconciled testnet block 16344420; 100 to 99 MUSD; one unclassified transfer",
+      "live_receivable": {
+        "reference": "TEST-AR-20261025-01",
+        "amount": "1 MUSD",
+        "state": "received",
+        "outstanding": "0",
+        "txHash": "0xb42f2f246d6149f3bcb315f255b24efe2d9df200f9facaa2ab26bf3f83eabee1",
+        "block": 16347269,
+        "logIndex": 0,
+        "scope": "self-funded testnet acceptance only"
+      }
     },
     "limits": [
       "Built-in English OCR was accepted on hosted PNG upload/review/draft. Hosted scanned PDF remains unverified; local scanned PDF OCR passed. Limits: 3 scanned pages, 4MP, 25s.",
       "Hosted file limit 4MiB, text PDF 10 pages; private source retained 7 days, deletion on access/upload.",
       "Team quorum is application policy on current V1; owner can call V1 directly outside app.",
       "V2 quorum contract is local tested only; no deployment or migration.",
-      "User OKX multi-member extension acceptance, real receivable allocation and new withdrawal-to-repayment handoff remain.",
+      "User OKX multi-member extension acceptance, new withdrawal-to-repayment handoff remain; real testnet receivable allocation passed.",
       "RPC can be unavailable; public receipt fails closed and supports refresh.",
       "Statement history was reconciled but the transfer remained unclassified; it is not claimed as an exact bill match."
     ],

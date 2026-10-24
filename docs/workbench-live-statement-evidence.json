@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-24T20:35:36.515Z",
+  "chainId": 31611,
+  "fromBlock": "16344420",
+  "toBlock": "16344420",
+  "status": "reconciled",
+  "originalStatus": "reconciled",
+  "canonicalState": "canonical",
+  "opening": "100000000000000000000",
+  "closing": "99000000000000000000",
+  "transfers": 1,
+  "classifications": [
+    "unclassified"
+  ]
+}

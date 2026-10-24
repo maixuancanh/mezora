@@ -1,0 +1,31 @@
+import {afterEach,describe,expect,it} from 'vitest';
+import {createDatabase,type Database} from './database';
+import {cashPlanScenarios} from './migrations/005-cash-plan-scenarios';
+import {runMigrations} from './migrations/runner';
+import {listCashPlanScenarios,readCashPlanScenario,saveCashPlanScenario} from './cash-plan-scenarios';
+const opened:Database[]=[];
+afterEach(async()=>{await Promise.all(opened.splice(0).map(db=>db.close()));});
+describe('cash plan scenario snapshots',()=>{
+  it('persists immutable snapshots, replays retries, and isolates reads and idempotency by tenant',async()=>{
+    const db=await createDatabase('memory://');opened.push(db);
+    await runMigrations(db,{migrations:[cashPlanScenarios]});
+    await db.query("INSERT INTO workspaces(id,mode) VALUES('a','live'),('b','live')");
+    await db.query("INSERT INTO bills(id,workspace_id,body) VALUES('bill','a','{\"amount\":\"25\"}'::jsonb)");
+    const input={workspaceId:'a',actorId:'owner',name:'Payroll',repayment:'10',idempotencyKey:'same-key'};
+    const snapshot={today:'2026-10-25',timeZone:'UTC',impact:{balanceBaseUnits:'100'},expectedIncome:[{amountBaseUnits:'999'}]};
+    const first=await saveCashPlanScenario(db,input,async()=>snapshot);
+    const replay=await saveCashPlanScenario(db,input,async()=>{throw new Error('Must not rebuild on retry');});
+    expect(replay).toEqual(first);
+    snapshot.impact.balanceBaseUnits='0';
+    expect((await readCashPlanScenario<typeof snapshot>(db,'a',first.id)).snapshot.impact.balanceBaseUnits).toBe('100');
+    await expect(readCashPlanScenario(db,'b',first.id)).rejects.toThrow(/not found/);
+    expect(await listCashPlanScenarios(db,'b')).toEqual([]);
+    const second=await saveCashPlanScenario(db,{...input,workspaceId:'b'},async()=>({today:'2026-10-26'}));
+    expect(second.id).not.toBe(first.id);
+    await expect(saveCashPlanScenario(db,{...input,repayment:'20'},async()=>({}))).rejects.toThrow(/idempotency/i);
+    await expect(db.query('UPDATE cash_plan_scenarios SET name=$1 WHERE id=$2',['changed',first.id])).rejects.toThrow(/immutable/);
+    await expect(db.query('DELETE FROM cash_plan_scenarios WHERE id=$1',[first.id])).rejects.toThrow(/immutable/);
+    expect((await db.query('SELECT body FROM bills')).rows).toEqual([{body:{amount:'25'}}]);
+    expect((await db.query('SELECT * FROM audit_events')).rows).toHaveLength(2);
+  });
+});

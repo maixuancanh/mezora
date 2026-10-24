@@ -3,7 +3,7 @@ import { encodeAbiParameters, keccak256, isAddress, getAddress, parseUnits, form
 import type { Database, Sql } from "./database";
 import { parseMusd, formatMusd, createTermsHash } from "../../domain/src/index";
 export type Mode="demo"|"live";
-export interface Bill {id:string;version:number;vendor:string;recipient:string;amount:string;dueDate:string;status:string;termsHash:string;onchainId:string;txHash?:string}
+export interface Bill {id:string;version:number;vendor:string;recipient:string;amount:string;dueDate:string;status:string;termsHash:string;onchainId:string;txHash?:string;invoiceReference?:string;sourceHash?:string;category?:string;memo?:string;createdBy?:string}
 export interface Activity{id:string;title:string;detail:string;createdAt:string;status:string;txHash?:string}
 export const money=(value:string)=>parseMusd(value);
 export const show=(value:bigint)=>formatMusd(value);
@@ -17,15 +17,22 @@ export async function getBill(q:Sql,ns:string,id:string,lock=false){
  if(!r.rows[0])throw new Error("Bill not found.");return r.rows[0].body;
 }
 export async function saveBill(q:Sql,ns:string,b:Bill){await q.query("UPDATE bills SET body=$1::jsonb WHERE id=$2 AND workspace_id=$3",[JSON.stringify(b),b.id,ns]);}
-export async function createBill(db:Database,ns:string,input:{vendor:string;recipient:string;amount:string;dueDate:string},mode:Mode="demo",owner="0x0000000000000000000000000000000000000001"){
+export interface BillInput {vendor:string;recipient:string;amount:string;dueDate:string;invoiceReference?:string;sourceHash?:string;category?:string;memo?:string;createdBy?:string}
+export async function createBill(db:Database,ns:string,input:BillInput,mode:Mode="demo",owner="0x0000000000000000000000000000000000000001"){return db.transaction(q=>createBillTx(q,ns,input,mode,owner));}
+export function validateBillInput(input:BillInput){
  if(!input.vendor?.trim()||input.vendor.length>150)throw new Error("Enter a vendor name (max 150 characters).");
  if(!isAddress(input.recipient)||/^0x0{40}$/i.test(input.recipient))throw new Error("Enter a valid, nonzero EVM recipient.");
  const amt=money(input.amount);if(amt<=0n)throw new Error("Bill amount must be positive.");
- if(!/^\d{4}-\d{2}-\d{2}$/.test(input.dueDate)||!Number.isFinite(Date.parse(input.dueDate)))throw new Error("Enter a valid due date.");
- const id=randomUUID(),version=1,recipient=getAddress(input.recipient),salt="0x"+randomBytes(32).toString("hex");
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(input.dueDate)||!Number.isFinite(Date.parse(input.dueDate))||new Date(input.dueDate).toISOString().slice(0,10)!==input.dueDate)throw new Error("Enter a valid due date.");
+ for(const [key,max] of [['invoiceReference',150],['category',80],['memo',2000],['sourceHash',100],['createdBy',100]] as const){const value=input[key];if(value!=null&&(typeof value!=='string'||value.length>max))throw new Error(`Invalid ${key}.`);}
+ return{amt,recipient:getAddress(input.recipient)};
+}
+export async function createBillTx(q:Sql,ns:string,input:BillInput,mode:Mode="demo",owner="0x0000000000000000000000000000000000000001"){
+ const {amt,recipient}=validateBillInput(input);
+ const id=randomUUID(),version=1,salt="0x"+randomBytes(32).toString("hex");
  const termsHash=createTermsHash({workspaceId:ns,billId:id,ownerAddress:owner,chainId:31611,version,recipient,amountBaseUnits:amt.toString(),dueAt:Math.floor(Date.parse(input.dueDate)/1000),randomSalt:salt});
- const bill:Bill={id,version,vendor:input.vendor.trim(),recipient,amount:show(amt),dueDate:input.dueDate,status:"draft",termsHash,onchainId:keccak256(encodeAbiParameters([{type:"string"},{type:"bytes32"}],[id,termsHash]))};
- await db.transaction(async q=>{await ensureWorkspace(q,ns,mode);await q.query("INSERT INTO bills(id,workspace_id,body) VALUES($1,$2,$3::jsonb)",[id,ns,JSON.stringify(bill)]);await log(q,ns,"Bill created",bill.vendor+" · "+bill.amount+" MUSD",mode==="demo"?"scenario":"draft");});return bill;
+ const bill:Bill={id,version,vendor:input.vendor.trim(),recipient,amount:show(amt),dueDate:input.dueDate,status:"draft",createdBy:input.createdBy||owner,...(input.memo?{memo:input.memo}:{}),...(input.invoiceReference?{invoiceReference:input.invoiceReference.trim().slice(0,150)}:{}),...(input.sourceHash?{sourceHash:input.sourceHash.slice(0,100)}:{}),...(input.category?{category:input.category.trim().slice(0,80)}:{}),termsHash,onchainId:keccak256(encodeAbiParameters([{type:"string"},{type:"bytes32"}],[id,termsHash]))};
+ await ensureWorkspace(q,ns,mode);await q.query("INSERT INTO bills(id,workspace_id,body) VALUES($1,$2,$3::jsonb)",[id,ns,JSON.stringify(bill)]);await log(q,ns,"Bill created",bill.vendor+" · "+bill.amount+" MUSD",mode==="demo"?"scenario":"draft");return bill;
 }
 export async function rawSnapshot(q:Sql,ns:string,mode:Mode,chainBalance?:bigint,chainReserved?:bigint){
  await ensureWorkspace(q,ns,mode);

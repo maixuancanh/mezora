@@ -1,3 +1,5 @@
+import {assertTeamApproval} from './memberships';
+import { assertBillPolicy } from './policy';
 import { randomUUID } from "node:crypto";
 import { decodeEventLog, decodeFunctionData, erc20Abi, isHash, keccak256, toHex } from "viem";
 import { database, type Database, type Sql } from "../../../../packages/db/src/database";
@@ -39,6 +41,8 @@ export async function prepareBillAction(db:Database,ns:string,owner:string,id:st
   // Prepared-but-not-broadcast requests are safe to return with the same immutable payload.
   const pendingStates={reserve:"reserve_pending",pay:"payment_pending",cancel:"cancel_pending"} as Record<string,string>;
   if(!expected||!(b.status===expected||b.status===pendingStates[action]))throw new Error("Action not allowed in current bill state.");
+  if(action==="reserve"||action==="pay")await assertTeamApproval(q,ns,b.id);
+  if(action==="reserve"||action==="pay")await assertBillPolicy(q,ns,{...b,status:expected!},chain.available+(action==="pay"?money(b.amount):0n));
   if(action==="reserve"&&chain.available<money(b.amount))throw new Error("Not enough available MUSD.");
   const commitment=await publicClient().readContract({address:chain.treasury!,abi:treasuryAbi,functionName:"commitments",args:[b.onchainId as `0x${string}`]});
   if(action==="reserve"&&commitment[3]!==0)throw new Error("This commitment ID is already used onchain. Refresh before retrying.");
@@ -95,11 +99,11 @@ export async function rejectPrepared(db:Database,ns:string,owner:string,intentId
   return {status:"rejected"};
  });
 }
-export async function reconcile(db:Database,ns:string){
- const config=await namespaceConfig(db,ns);if(!config.treasury)return {status:"not_configured",lastCheckedAt:null,recovered:false};
+export async function reconcile(db:Database,ns:string,options:{intentIds?:string[];discoverPrepared?:boolean}={}){
+ const config=await namespaceConfig(db,ns);if(!config.treasury&&!options.intentIds?.length)return {status:"not_configured",lastCheckedAt:null,recovered:false};
  const client=publicClient();
  let recovered=false;
- const unsigned=await db.query<{id:string;body:Intent}>("SELECT id,body FROM intents WHERE workspace_id=$1 AND body->>'state'='prepared'",[ns]);
+ const unsigned=options.discoverPrepared===false?{rows:[]}:await db.query<{id:string;body:Intent}>("SELECT id,body FROM intents WHERE workspace_id=$1 AND body->>'state'='prepared'"+(options.intentIds?" AND id=ANY($2::text[])":""),options.intentIds?[ns,options.intentIds]:[ns]);
  for(const row of unsigned.rows){
   const i=row.body;if(!i.preparedBlock)continue;
   const latest=await client.getBlockNumber();let foundHash:`0x${string}`|undefined;
@@ -119,7 +123,7 @@ export async function reconcile(db:Database,ns:string){
    });recovered=true;
   }
  }
- const pending=await db.query<{id:string;body:Intent}>("SELECT id,body FROM intents WHERE workspace_id=$1 AND body->>'state' IN ('broadcast','confirmed','reverted') ORDER BY body->>'createdAt'",[ns]);
+ const pending=await db.query<{id:string;body:Intent}>("SELECT id,body FROM intents WHERE workspace_id=$1 AND body->>'state' IN ('broadcast','confirmed','reverted')"+(options.intentIds?" AND id=ANY($2::text[])":"")+" ORDER BY body->>'createdAt'",options.intentIds?[ns,options.intentIds]:[ns]);
  const latest=await client.getBlockNumber();const confirmations=BigInt(Math.max(1,Number(process.env.MEZORA_CONFIRMATIONS)||2));
  for(const row of pending.rows){
   const i=row.body;if(!i.txHash)continue;
@@ -159,7 +163,7 @@ export async function reconcile(db:Database,ns:string){
   let matched=receipt.status==="reverted"||i.action==="approve";
   if(receipt.status==="success"&&i.action!=="approve"){
    for(const entry of receipt.logs){
-    if(entry.address.toLowerCase()!==config.treasury.toLowerCase())continue;
+    if(entry.address.toLowerCase()!==i.to.toLowerCase())continue;
     try{
      const event=decodeEventLog({abi:treasuryAbi,data:entry.data,topics:entry.topics});
      if(i.billId&&["Reserved","Paid","Canceled"].includes(event.eventName)){

@@ -1,0 +1,2 @@
+import type {Migration} from './runner';
+export const repaymentHandoffs:Migration={version:6,name:'repayment-handoffs',sql:`CREATE TABLE IF NOT EXISTS repayment_handoffs(id text PRIMARY KEY,workspace_id text NOT NULL REFERENCES workspaces(id),owner text NOT NULL,withdrawal_intent_id text NOT NULL UNIQUE REFERENCES intents(id),repayment_id text UNIQUE REFERENCES repayments(id),amount numeric(78,0) NOT NULL,created_at timestamptz NOT NULL DEFAULT now());`};

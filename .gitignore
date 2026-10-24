@@ -16,3 +16,6 @@ contracts/cache/
 .vercel
 
 .next-wallet-comparison/
+
+# Isolated Next verification output
+.next-build/

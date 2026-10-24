@@ -1,0 +1,46 @@
+{
+  "checkedAt": "2026-10-24T20:38:41.566Z",
+  "target": "isolated PGlite in-memory database; production not overwritten",
+  "checks": [
+    {
+      "table": "workspaces",
+      "rows": 159,
+      "restored": true
+    },
+    {
+      "table": "bills",
+      "rows": 4,
+      "restored": true
+    },
+    {
+      "table": "activity",
+      "rows": 24,
+      "restored": true
+    },
+    {
+      "table": "intents",
+      "rows": 5,
+      "restored": true
+    },
+    {
+      "table": "challenges",
+      "rows": 295,
+      "restored": true
+    },
+    {
+      "table": "sessions",
+      "rows": 18,
+      "restored": true
+    },
+    {
+      "table": "treasury_bindings",
+      "rows": 1,
+      "restored": true
+    },
+    {
+      "table": "repayments",
+      "rows": 1,
+      "restored": true
+    }
+  ]
+}

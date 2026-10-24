@@ -1,0 +1,23 @@
+import {randomUUID} from 'node:crypto';
+import type {Database,Sql} from '../../../../packages/db/src/database';
+import {createBillTx,ensureWorkspace,type Mode} from '../../../../packages/db/src/workspace';
+import {appendAuditEvent,assertExpectedVersion,withIdempotentMutation} from '../../../../packages/db/src/persistence';
+import {occurrenceForDate,validateRecurringTemplate,type RecurringTemplate} from '../../../../packages/domain/src/recurrence';
+export interface SavedTemplate extends RecurringTemplate {id:string;version:number}
+export async function recurringList(db:Database,ns:string){return (await db.query<{body:SavedTemplate}>('SELECT body FROM recurring_templates WHERE workspace_id=$1 ORDER BY id',[ns])).rows.map(r=>r.body);}
+export async function recurringMutation(db:Database,ns:string,mode:Mode,owner:string,b:Record<string,unknown>){
+ const today=new Date().toISOString().slice(0,10);
+ const run=async(q:Sql)=>{await ensureWorkspace(q,ns,mode);await q.query('SELECT id FROM workspaces WHERE id=$1 FOR UPDATE',[ns]);
+ if(b.action==='create'){
+ const body:SavedTemplate={id:randomUUID(),version:1,vendor:String(b.vendor||''),recipient:String(b.recipient||''),amount:String(b.amount||''),category:String(b.category||''),frequency:b.frequency as 'weekly'|'monthly',timezone:'UTC',startDate:String(b.startDate||''),endDate:b.endDate?String(b.endDate):null,paused:false,activeFrom:today};validateRecurringTemplate(body);
+ await q.query('INSERT INTO recurring_templates(id,workspace_id,body) VALUES($1,$2,$3::jsonb)',[body.id,ns,JSON.stringify(body)]);await appendAuditEvent(q,{workspaceId:ns,actorId:owner,action:'recurring.create',entityId:body.id,entityVersion:1});return{template:body};}
+ if(b.action==='update'){const t=(await q.query<{body:SavedTemplate}>('SELECT body FROM recurring_templates WHERE id=$1 AND workspace_id=$2 FOR UPDATE',[b.id,ns])).rows[0]?.body;if(!t)throw new Error('Template not found.');assertExpectedVersion(t.version,Number(b.expectedVersion));const amount=String(b.amount||'');const next={...t,vendor:String(b.vendor||'').trim(),recipient:String(b.recipient||''),amount,category:String(b.category||''),endDate:b.endDate?String(b.endDate):null,version:t.version+1};validateRecurringTemplate(next);await q.query('UPDATE recurring_templates SET body=$1::jsonb WHERE id=$2 AND workspace_id=$3',[JSON.stringify(next),t.id,ns]);await appendAuditEvent(q,{workspaceId:ns,actorId:owner,action:'recurring.update',entityId:t.id,entityVersion:next.version,details:{previousAmount:t.amount,newAmount:next.amount}});return{template:next,message:'Template revised for future drafts. Existing bills retain their reviewed terms.'};}
+ if(b.action==='pause'||b.action==='resume'){const t=(await q.query<{body:SavedTemplate}>('SELECT body FROM recurring_templates WHERE id=$1 AND workspace_id=$2 FOR UPDATE',[b.id,ns])).rows[0]?.body;if(!t)throw new Error('Template not found.');assertExpectedVersion(t.version,Number(b.expectedVersion));t.version++;t.paused=b.action==='pause';if(!t.paused)t.activeFrom=today;await q.query('UPDATE recurring_templates SET body=$1::jsonb WHERE id=$2 AND workspace_id=$3',[JSON.stringify(t),t.id,ns]);await appendAuditEvent(q,{workspaceId:ns,actorId:owner,action:`recurring.${b.action}`,entityId:t.id,entityVersion:t.version});return{template:t};}
+ if(b.action==='generate'){const templates=(await q.query<{body:SavedTemplate}>('SELECT body FROM recurring_templates WHERE workspace_id=$1 FOR UPDATE',[ns])).rows.map(r=>r.body),billIds:string[]=[];
+ for(const t of templates){const occurrence=occurrenceForDate(t,today);if(!occurrence)continue;if((await q.query('SELECT bill_id FROM recurring_occurrences WHERE template_id=$1 AND period_key=$2',[t.id,occurrence.periodKey])).rows.length)continue;
+ const bill=await createBillTx(q,ns,{...t,dueDate:occurrence.dueDate,invoiceReference:`recurring:${t.id}:${occurrence.periodKey}`},mode,mode==='demo'?'0x0000000000000000000000000000000000000001':owner);await q.query('INSERT INTO recurring_occurrences(template_id,period_key,bill_id) VALUES($1,$2,$3)',[t.id,occurrence.periodKey,bill.id]);billIds.push(bill.id);}
+ await appendAuditEvent(q,{workspaceId:ns,actorId:owner,action:'recurring.generate',entityId:ns,details:{billIds,today}});return{billIds,message:'Drafts generated on demand. Each still needs review and payment approval.'};}
+ throw new Error('Unknown recurring action.');};
+ if(b.action==='create'){await ensureWorkspace(db,ns,mode);return withIdempotentMutation(db,{workspaceId:ns,actorId:owner,action:'recurring.create.request',entityId:ns,idempotencyKey:String(b.idempotencyKey||''),request:b},run);}
+ return db.transaction(run);
+}

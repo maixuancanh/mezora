@@ -1,0 +1,5 @@
+import {assertFeature} from '@/server/features';
+import {NextRequest,NextResponse} from 'next/server';import {workspaceIdentity} from '@/server/auth';import {readBody,modeOf,errorResponse} from '@/server/http';import {database} from '../../../../../../packages/db/src/database';import {requireRole} from '../../../../../../packages/db/src/memberships';import {listReceivables,receivableMutation} from '@/server/receivables';
+export const runtime='nodejs';export const dynamic='force-dynamic';
+export async function GET(req:NextRequest){try{assertFeature('receivables');const mode=modeOf(req.nextUrl.searchParams.get('mode')),i=await workspaceIdentity(mode);return NextResponse.json({receivables:await listReceivables(await database(),i.id,mode)},{headers:{'Cache-Control':'no-store'}});}catch(e){return errorResponse(e);}}
+export async function POST(req:NextRequest){try{assertFeature('receivables');const b=await readBody(req),mode=modeOf(b.mode),i=await workspaceIdentity(mode),db=await database();await requireRole(db,i.id,i.actor||'scenario',['owner']);return NextResponse.json(await receivableMutation(db,i.id,mode,i.owner||'',b));}catch(e){return errorResponse(e);}}

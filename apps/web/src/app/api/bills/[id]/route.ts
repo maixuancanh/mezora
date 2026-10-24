@@ -1,0 +1,3 @@
+import {NextRequest,NextResponse} from 'next/server';import {workspaceIdentity} from '@/server/auth';import {readBody,modeOf,errorResponse} from '@/server/http';import {database} from '../../../../../../../packages/db/src/database';import {editDraftBill} from '@/server/bill-edit';
+export const runtime='nodejs';
+export async function PATCH(req:NextRequest,{params}:{params:Promise<{id:string}>}){try{const b=await readBody(req),i=await workspaceIdentity(modeOf(b.mode)),{id}=await params;return NextResponse.json({bill:await editDraftBill(await database(),i.id,i.owner||'0x0000000000000000000000000000000000000001',i.actor||'scenario',id,b,Number(b.expectedVersion))});}catch(e){return errorResponse(e);}}

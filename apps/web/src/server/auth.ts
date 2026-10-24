@@ -1,3 +1,4 @@
+import {memberRole} from "../../../../packages/db/src/memberships";
 import { randomBytes, createHash } from "node:crypto";
 import { cookies } from "next/headers";
 import { database } from "../../../../packages/db/src/database";
@@ -23,7 +24,9 @@ export async function verifySession(address:string,signature:string,message:stri
 export async function sessionAddress(){const token=(await cookies()).get("mezora-session")?.value;if(!token)return null;const db=await database();const rows=await db.query<{address:string}>("SELECT address FROM sessions WHERE id=$1 AND expires_at>$2",[hash(token),Date.now()]);return rows.rows[0]?.address||null;}
 export async function workspaceIdentity(mode:"demo"|"live"){
  const jar=await cookies();
- if(mode==="live"){const a=await sessionAddress();if(!a)throw new Error("Connect and sign in with the treasury owner wallet.");return {id:"live:"+a.toLowerCase(),owner:a};}
+ if(mode==="live"){const a=await sessionAddress();if(!a)throw new Error("Connect and sign in with the treasury owner wallet.");const selected=jar.get("mezora-workspace")?.value;
+  if(selected&&/^live:0x[0-9a-f]{40}$/.test(selected)&&await memberRole(await database(),selected,a))return {id:selected,owner:getAddress(selected.slice(5)),actor:a,role:(await memberRole(await database(),selected,a))!};
+  return {id:"live:"+a.toLowerCase(),owner:a,actor:a,role:"owner" as const};}
  let sid=jar.get("mezora-demo")?.value;if(!sid||!/^\w{48}$/.test(sid)){sid=randomBytes(24).toString("hex");jar.set("mezora-demo",sid,{httpOnly:true,sameSite:"strict",path:"/",maxAge:2592000,secure:process.env.NODE_ENV==="production"});}
- return {id:"demo:"+sid,owner:null};
+ return {id:"demo:"+sid,owner:null,actor:null,role:"owner" as const};
 }

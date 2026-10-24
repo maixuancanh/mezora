@@ -5,13 +5,13 @@
   "branch": "build/mezora-mvp",
   "local_url": "http://127.0.0.1:3210",
   "phases": {
-    "P0": "official MUSD verified; owner now funded0.05BTC testnet; user treasury signature pending",
+    "P0": "Official MUSD verified; owner deployed testnet treasury through OKX.",
     "P1": "contract and invariant tests pass",
     "P2": "persistent PostgreSQL/PGlite workspace, EOA auth, exact requests and receipt recovery implemented",
-    "P3": "Existing workspace UI plus explicit OKX provider selection implemented; actual OKX browser signing still pending",
-    "P4": "Trove reader and owner repayment adapter/UI implemented; actual owner has no active Trove; successful repayment execution unverified",
-    "P5": "Hosted app/public source implemented; submission kit prepared; actual owner treasury/payment receipt, final video/deck and submission remain pending",
-    "P6": "future"
+    "P3": "OKX deployment, deposit, bill reserve/payment and repayment accepted in user browser.",
+    "P4": "Active Trove read and 1 MUSD repayment verified onchain: success receipt, exact owner burn, wallet balance and debt before/after.",
+    "P5": "Hosted app and public source available; actual treasury payment and repayment proven; final deck/video and AKINDO submission pending.",
+    "P6": "Business Workbench deployed, local and hosted evidence recorded; remaining live acceptance and optional V2 rollout documented."
   },
   "evidence": {
     "unit_tests": 58,
@@ -23,19 +23,21 @@
     "duplicate_recovery": "docs/duplicate-recovery-evidence.json",
     "hosted": "docs/hosted-deployment-evidence.json",
     "setup_local": "docs/setup-local-evidence.json",
-    "setup_repay_browser": "docs/setup-repay-browser-evidence.json"
+    "setup_repay_browser": "docs/setup-repay-browser-evidence.json",
+    "testnet_repayment": "docs/testnet-repayment-evidence-2026-10-25.json"
   },
   "external_state": {
-    "testnet_treasury_deployed": false,
+    "testnet_treasury_deployed": true,
     "hosted": true,
     "public_repo": true,
     "submitted": false
   },
   "remaining": [
-    "Owner wallet signature on /setup for treasury deployment",
-    "MUSD testnet funding and actual treasury payment receipt",
-    "Actual active borrower repayment evidence",
-    "Deck/pitch video/submission"
+    "Complete final project deck and 2-minute pitch video",
+    "Update submission narrative with actual testnet evidence",
+    "Check live AKINDO requirements and cutoff; submit with human authorization",
+    "Run remaining authenticated Workbench acceptance: user OKX team sessions, real receivable allocation, withdrawal-to-repayment handoff.",
+    "Optional V2 deployment, wallet acceptance and migration are not complete."
   ],
   "hosted_url": "https://mezora.vercel.app",
   "public_repo": "https://github.com/maixuancanh/mezora",
@@ -43,7 +45,69 @@
   "wallet": {
     "preferred": "OKX Wallet",
     "selection": "dedicated namespace or labelled injected/EIP-6963 provider; no generic provider fallback",
-    "human_extension_acceptance": "pending"
+    "human_extension_acceptance": "Confirmed by user actions and successful testnet receipts."
   },
-  "submission_kit": "docs/SUBMISSION_KIT.md"
+  "submission_kit": "docs/SUBMISSION_KIT.md",
+  "workbench": {
+    "updated_at": "2026-10-25",
+    "deployment_id": "dpl_CZtG3hLzDm6u4Qs2QA9jqddwiirB",
+    "url": "https://mezora.vercel.app/workbench",
+    "implemented": [
+      "public_chain_receipts",
+      "cash_impact_and_two_transaction_repayment_handoff",
+      "repayment_progress_and_compact_amounts",
+      "30_day_forecast_and_saved_scenarios",
+      "invoice_payee_duplicate_and_budget_policy",
+      "csv_import",
+      "statement_csv_json_and_period_close_reopen",
+      "recurring_drafts_and_future_term_edits",
+      "private_document_extraction_and_reviewed_drafts",
+      "team_roles_and_version_bound_app_approvals",
+      "receivables_and_reviewed_transfer_allocations"
+    ],
+    "verification": {
+      "application_tests": 157,
+      "contract_tests": 35,
+      "typecheck": "passed",
+      "production_build": "passed",
+      "postgres_migrations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "original_tables_unchanged_after_migration": 8,
+      "backup_restore": "all eight original tables restored into isolated in-memory PGlite",
+      "local_browser": [
+        "CSV preview/commit",
+        "changed payee warning",
+        "forecast shortfall",
+        "PNG OCR to source review to draft",
+        "scenario save/reload",
+        "public payment receipt",
+        "mobile no page overflow"
+      ],
+      "hosted_browser": [
+        "CSV preview",
+        "forecast shortfall",
+        "public repayment receipt",
+        "authenticated PNG upload → CPU OCR → cited review → draft using a disposable EOA session",
+        "two independent disposable EOA SIWE sessions → invite → accept → request → reviewer vote via hosted API"
+      ],
+      "live_statement": "canonical reconciled testnet block 16344420; 100 to 99 MUSD; one unclassified transfer"
+    },
+    "limits": [
+      "Built-in English OCR was accepted on hosted PNG upload/review/draft. Hosted scanned PDF remains unverified; local scanned PDF OCR passed. Limits: 3 scanned pages, 4MP, 25s.",
+      "Hosted file limit 4MiB, text PDF 10 pages; private source retained 7 days, deletion on access/upload.",
+      "Team quorum is application policy on current V1; owner can call V1 directly outside app.",
+      "V2 quorum contract is local tested only; no deployment or migration.",
+      "User OKX multi-member extension acceptance, real receivable allocation and new withdrawal-to-repayment handoff remain.",
+      "RPC can be unavailable; public receipt fails closed and supports refresh.",
+      "Statement history was reconciled but the transfer remained unclassified; it is not claimed as an exact bill match."
+    ],
+    "report": "docs/WORKBENCH_RELEASE.md"
+  }
 }

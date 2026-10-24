@@ -37,3 +37,9 @@ Hosted files: **4MiB**, text PDF at most 10 pages; built-in English OCR at most 
 App policy cannot make V1 a multisig or enforce its planning buffer outside Mezora. Withdraw and repay remain two transactions: failed repayment leaves withdrawn funds in the wallet. No automatic recovery signature, debt close, swap or conversion is implied.
 
 Next acceptance: hosted scanned PDF; user OKX role-wallet acceptance; one real receivable allocation; a small separately signed withdrawal/repayment handoff; authenticated statement export/close. Deck/video and final AKINDO submission remain separate work. No submission was made.
+
+## Business interface update — 25/10/2026
+
+Replaced the module-tab workbench with the existing Mezora visual shell and task navigation: Overview, Bills, Cash plan, Customers, Reports and Settings. Overview leads with actual cash/commitments/cushion, actionable next steps, scheduled payments and a 30-day cash chart. Invoice upload, CSV and recurring tools are grouped under Bills; team and spending checks under Settings. Daily figures, saved plans, transfer matching and blockchain reporting inputs expand on request. Existing wallet signatures and verification rules are unchanged.
+
+Verified: TypeScript and optimized build passed; browser overview → repayment forecast → expandable daily breakdown → CSV access passed, with no page exceptions or mobile page overflow. The chart includes speculative drafts/receipts and labels them separately from funds available to spend.

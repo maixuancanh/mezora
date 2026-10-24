@@ -1,5 +1,5 @@
 import{randomUUID}from"node:crypto";
-import{type Address,type Hex,isHash,TransactionNotFoundError}from"viem";
+import{type Address,type Hex,isHash,TransactionNotFoundError,parseAbiItem,zeroAddress}from"viem";
 import{type Database, type Sql}from"../../../../packages/db/src/database";
 import{ensureWorkspace,money,show}from"../../../../packages/db/src/workspace";
 import{publicClient}from"../../../../packages/mezo/src/network";
@@ -10,9 +10,9 @@ interface RepayIntent{id:string;owner:string;amount:string;amountBaseUnits:strin
 function response(i:RepayIntent){return{intentId:i.id,transaction:{to:troveDeployment.borrowerOperations,data:i.data,value:"0x0",chainId:31611,nonce:"0x"+i.nonce.toString(16)},review:{action:"repay",amount:i.amount,recipient:troveDeployment.borrowerOperations,chainId:31611},snapshot:i.snapshot,economics:i.economics,expiresAt:i.expiresAt};}
 async function findHash(i:RepayIntent,head:bigint){
  const p=publicClient();for(let n=BigInt(i.preparedBlock);n<=head;n+=2000n){
-  const logs=await p.getLogs({address:troveDeployment.musd,fromBlock:n,toBlock:n+1999n<head?n+1999n:head});
+  const logs=await p.getLogs({address:troveDeployment.musd,event:parseAbiItem("event Transfer(address indexed from,address indexed to,uint256 value)"),args:{from:i.owner as Address,to:zeroAddress},fromBlock:n,toBlock:n+1999n<head?n+1999n:head});
   for(const hash of new Set(logs.map(l=>l.transactionHash).filter((h):h is Hex=>Boolean(h)))){
-   const tx=await p.getTransaction({hash});if(tx.from.toLowerCase()===i.owner.toLowerCase()&&tx.to?.toLowerCase()===troveDeployment.borrowerOperations.toLowerCase()&&tx.input.toLowerCase()===i.data.toLowerCase()&&tx.nonce===i.nonce&&tx.value===0n)return hash;
+   let tx;try{tx=await p.getTransaction({hash});}catch(error){if(error instanceof TransactionNotFoundError)continue;throw error;}if(tx.from.toLowerCase()===i.owner.toLowerCase()&&tx.to?.toLowerCase()===troveDeployment.borrowerOperations.toLowerCase()&&tx.input.toLowerCase()===i.data.toLowerCase()&&tx.nonce===i.nonce&&tx.value===0n)return hash;
   }
  }return null;
 }
@@ -43,7 +43,14 @@ export async function prepareRepayment(db:Database,owner:string,amount:string,pr
  return db.transaction(async q=>{
   const ns="live:"+owner.toLowerCase();await ensureWorkspace(q,ns,"live");await q.query("SELECT id FROM workspaces WHERE id=$1 FOR UPDATE",[ns]);
   const active=await q.query<{body:RepayIntent}>("SELECT body FROM repayments WHERE owner=$1 AND body->>'status' IN ('prepared','pending')",[owner.toLowerCase()]);
-  const i=active.rows[0]?.body;if(i){if(i.amountBaseUnits!==amountBaseUnits)throw new Error("A different repayment is unresolved. Recover its receipt before changing the amount.");if(i.status==="pending")throw new Error("A repayment is pending; refresh before retrying.");if(i.expiresAt<=Math.floor(Date.now()/1000))throw new Error("Previous repayment review expired. Recover or cancel its pinned wallet nonce before creating another repayment.");return response(i);}
+  const i=active.rows[0]?.body;if(i){if(i.amountBaseUnits!==amountBaseUnits)throw new Error("A different repayment is unresolved. Recover its receipt before changing the amount.");if(i.status==="pending")throw new Error("A repayment is pending; refresh before retrying.");if(i.expiresAt<=Math.floor(Date.now()/1000)){
+    const p=publicClient();
+    const [latestNonce,pendingNonce]=await Promise.all([p.getTransactionCount({address:owner as Address,blockTag:"latest"}),p.getTransactionCount({address:owner as Address,blockTag:"pending"})]);
+    if(latestNonce!==i.nonce||pendingNonce!==i.nonce)throw new Error("The previous wallet nonce is pending or consumed. Recover its receipt before sending another repayment.");
+    const fresh=await prepareOwnerRepayment(p,{borrower:owner,ownerAddress:owner,amountBaseUnits,maxSnapshotAgeSeconds:60});
+    i.data=fresh.data;i.snapshot=fresh.snapshot;i.economics=fresh.economics;i.expiresAt=fresh.expiresAt;
+    await q.query("UPDATE repayments SET body=$1::jsonb WHERE id=$2 AND owner=$3",[JSON.stringify(i),i.id,owner.toLowerCase()]);
+   }return response(i);}
   const prepared=await prepareOwnerRepayment(publicClient(),{borrower:owner,ownerAddress:owner,amountBaseUnits,maxSnapshotAgeSeconds:60});
   const nonce=await publicClient().getTransactionCount({address:owner as Address,blockTag:"pending"});
   const intent:RepayIntent={id:randomUUID(),owner,amount:show(BigInt(amountBaseUnits)),amountBaseUnits,nonce,data:prepared.data,preparedBlock:prepared.snapshot.blockNumber,createdAt:new Date().toISOString(),expiresAt:prepared.expiresAt,status:"prepared",snapshot:prepared.snapshot,economics:prepared.economics};

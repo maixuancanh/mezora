@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T00:59:55.624Z",
+  "updated_at": "2026-10-25",
   "project": "Mezora",
   "root": "D:/bitgethackathon/products/mezora",
   "branch": "build/mezora-mvp",
@@ -8,13 +8,13 @@
     "P0": "official MUSD verified; owner now funded0.05BTC testnet; user treasury signature pending",
     "P1": "contract and invariant tests pass",
     "P2": "persistent PostgreSQL/PGlite workspace, EOA auth, exact requests and receipt recovery implemented",
-    "P3": "UI browser flow and390px mobile verified",
+    "P3": "Existing workspace UI plus explicit OKX provider selection implemented; actual OKX browser signing still pending",
     "P4": "Trove reader and owner repayment adapter/UI implemented; actual owner has no active Trove; successful repayment execution unverified",
-    "P5": "hosted app and dedicated SQL verified; public repository pushed; owner treasury, deck/video and submission pending",
+    "P5": "Hosted app/public source implemented; submission kit prepared; actual owner treasury/payment receipt, final video/deck and submission remain pending",
     "P6": "future"
   },
   "evidence": {
-    "unit_tests": 41,
+    "unit_tests": 58,
     "contract_tests": 18,
     "browser": "docs/browser-evidence.json",
     "local_evm": "docs/local-evm-evidence.json",
@@ -39,5 +39,11 @@
   ],
   "hosted_url": "https://mezora.vercel.app",
   "public_repo": "https://github.com/maixuancanh/mezora",
-  "owner_private_key_stored": false
+  "owner_private_key_stored": false,
+  "wallet": {
+    "preferred": "OKX Wallet",
+    "selection": "dedicated namespace or labelled injected/EIP-6963 provider; no generic provider fallback",
+    "human_extension_acceptance": "pending"
+  },
+  "submission_kit": "docs/SUBMISSION_KIT.md"
 }

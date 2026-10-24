@@ -26,9 +26,9 @@ Official chain31611, BTC gas. MUSD address independently checked read-only:
 See deployments/testnet-token-verification.json for block/source/code evidence. This is token verification, not a Mezora deployment.
 
 1. Build contracts with Foundry: `forge build --root contracts`.
-2. Open /setup, sign in with the owner wallet, review deployment and approve it in the wallet; registration verifies exact creation calldata and runtime. Existing treasury connection is also supported.
+2. Open /setup, connect OKX Wallet and sign in with the owner account, review deployment and approve it in the wallet; registration verifies exact creation calldata and runtime. Existing treasury connection is also supported.
 3. Local: set apps/web/.env.local from root .env.example as needed. Treasury bindings persist per owner; MEZORA_TREASURY_ADDRESS remains an optional operator fallback. Hosted: dedicated PostgreSQL DATABASE_URL is required. Use full absolute MEZORA_DATA_DIR if running services from different directories.
-4. Restart web. Select Mezo Testnet, connect injected EOA wallet and sign nonce-bound login.
+4. Restart web. Select Mezo Testnet, connect OKX Wallet (extension or its in-app browser) and sign nonce-bound login.
 5. Deposit first prompts exact MUSD allowance if needed; after confirmation, submit deposit again. Owner signs each action; application stores no owner private key.
 
 Treasury deployed code, owner, token and18 decimals are checked before transaction preparation. All cash reads pin one block and recheck its hash. UI validates reviewed action/amount/recipient/chain/target before wallet send. Metadata contains no arbitrary calldata editor.
@@ -86,3 +86,9 @@ See docs/THIRD_PARTY_NOTICES.md, docs/UI_REUSE.md and docs/DOMAIN_REUSE.md. Drea
 Implemented: local working workspace, persistent scenario, treasury contract, tests, EOA live transaction preparation/reconciliation, read-only proposals, local EVM evidence and official MUSD read verification.
 
 Next phase: /setup, /repay and dedicated SQL are implemented; see docs/next-phase-2026-10-23.md and implementation-status.json for current hosted/live evidence. Customer checkout, batch/recurring execution and submission materials remain planned. Local tests do not establish an owner testnet transaction.
+
+## Wallet integration (25 October 2026)
+
+The three app pages now select OKX Wallet explicitly, using its dedicated injected namespace, labelled provider fallback, or EIP-6963 announcement. An unrelated window.ethereum provider is not selected. SIWE, exact calldata review, account/network checks and owner signatures remain required. Switching wallets may change the owner address: a treasury is bound to the account that actually deploys it. No assumption is made that the previously supplied address is present in OKX.
+
+See docs/SUBMISSION_KIT.md for truthful demo and submission copy; live treasury/payment receipts and final video remain pending until completed.

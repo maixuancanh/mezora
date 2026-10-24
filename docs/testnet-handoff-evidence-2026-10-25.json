@@ -1,0 +1,20 @@
+{
+  "verifiedAt": "2026-10-24T21:40:29.885Z",
+  "chainId": 31611,
+  "withdrawal": {
+    "hash": "0x1c2044fd314e3355d946fe281de24e3fc24865a76a1338fc4e5eb1526c6e9038",
+    "status": "success",
+    "blockNumber": "16347367",
+    "blockHash": "0x3986bfb7b195cbdacab23702598a280440a77b9d834532424e67c8dd32646ca7",
+    "from": "0xb06cFA71F295922B96501c34744ACf87Afa00351",
+    "to": "0x2c7FFA7b22B5D75b390f7BCA5D75bE0475C85b31",
+    "amount": "1",
+    "token": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+    "logIndex": 0
+  },
+  "handoffId": "a3d5f2f1-cc3e-427d-bbbc-88402949ce0f",
+  "repayment": {
+    "status": "not yet signed or verified"
+  },
+  "scope": "testnet two-transaction workflow; V1 buffer is a planning value, not contract-enforced"
+}

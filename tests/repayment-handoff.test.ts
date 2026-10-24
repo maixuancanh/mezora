@@ -6,7 +6,7 @@ vi.mock('../packages/mezo/src/network',async original=>({...await original<typeo
 vi.mock('../packages/mezo/src/trove',async original=>({...await original<typeof import('../packages/mezo/src/trove')>(),prepareOwnerRepayment:mock.prepare}));
 import {createDatabase,type Database} from '../packages/db/src/database';
 import {ensureWorkspace} from '../packages/db/src/workspace';
-import {createHandoff,handoffState,validateHandoff} from '../apps/web/src/server/repayment-handoff';
+import {createHandoff,handoffState,validateHandoff,amendHandoff} from '../apps/web/src/server/repayment-handoff';
 import {prepareRepayment} from '../apps/web/src/server/repayment';
 const owner='0x1111111111111111111111111111111111111111',ns='live:'+owner,hash='0x'+'a'.repeat(64);
 let db:Database;
@@ -31,3 +31,5 @@ test('a withdrawal changed during prepare rolls back a newly prepared intent and
  await expect(prepareRepayment(db,owner,'5',false,h.id)).rejects.toThrow(/confirmed receipt/);
  expect(await count()).toBe(0);expect(await validateHandoff(db,owner,h.id,'5')).toBeNull();
 });
+
+test('amend only unbound handoff with matching prior amount; never changes withdrawal or prepared repayment',async()=>{const h=await handoff();expect(await amendHandoff(db,ns,owner,h.id,'5','4')).toEqual({id:h.id,amount:'4'});await expect(amendHandoff(db,ns,owner,h.id,'5','3')).rejects.toThrow(/changed/);await expect(amendHandoff(db,ns,owner,h.id,'4','11')).rejects.toThrow(/exceed/);await expect(validateHandoff(db,owner,h.id,'5')).rejects.toThrow(/match/);await prepareRepayment(db,owner,'4',false,h.id);await expect(amendHandoff(db,ns,owner,h.id,'4','3')).rejects.toThrow(/already prepared/);});

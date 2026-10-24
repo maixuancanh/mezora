@@ -37,6 +37,12 @@ export async function createHandoff(db:Database,ns:string,owner:string,withdrawa
  });
 }
 /** Called before prepare and again under the repayment workspace lock. */
+export async function amendHandoff(db:Database,ns:string,owner:string,id:string,expectedAmount:string,amount:string){
+ namespace(ns,owner);await refreshHandoff(db,owner,id);const n=money(amount),expected=money(expectedAmount);if(n<=0n)throw new Error('Enter a positive repayment amount.');
+ return db.transaction(async q=>{await q.query('SELECT id FROM workspaces WHERE id=$1 FOR UPDATE',[ns]);const r=(await q.query<{amount:string;repayment_id:string|null;withdrawal:Withdrawal}>("SELECT h.amount::text,h.repayment_id,i.body AS withdrawal FROM repayment_handoffs h JOIN intents i ON i.id=h.withdrawal_intent_id AND i.workspace_id=h.workspace_id WHERE h.id=$1 AND h.workspace_id=$2 AND h.owner=$3 FOR UPDATE OF h",[id,ns,owner.toLowerCase()])).rows[0];
+ if(!r||!confirmed(r.withdrawal,owner,(await effectiveConfig(q,owner)).treasury))throw new Error('Confirmed tracked withdrawal not found.');if(r.repayment_id)throw new Error('A repayment is already prepared or submitted. Its tracked amount cannot change.');if(BigInt(r.amount)!==expected)throw new Error('Tracked amount changed. Refresh before editing.');if(n>money(r.withdrawal.amount))throw new Error('The tracked repayment cannot exceed this withdrawal.');
+ await q.query('UPDATE repayment_handoffs SET amount=$1 WHERE id=$2',[n.toString(),id]);await appendAuditEvent(q,{workspaceId:ns,actorId:owner,action:'repayment.handoff.amend',entityId:id,details:{previousAmountBaseUnits:expected.toString(),amountBaseUnits:n.toString()}});return{id,amount:show(n)};});
+}
 export async function validateHandoff(q:Sql,owner:string,id:string,amount:string){
  const r=(await q.query<{amount:string;withdrawal:Withdrawal;repayment_id:string|null;repaymentStatus:string|null}>("SELECT h.amount::text,i.body AS withdrawal,h.repayment_id,r.body->>'status' AS \"repaymentStatus\" FROM repayment_handoffs h JOIN intents i ON i.id=h.withdrawal_intent_id AND i.workspace_id=h.workspace_id AND i.action='withdraw' LEFT JOIN repayments r ON r.id=h.repayment_id AND r.owner=h.owner WHERE h.id=$1 AND h.owner=$2 AND h.workspace_id=$3",[id,owner.toLowerCase(),`live:${owner.toLowerCase()}`])).rows[0];
  if(!r||!confirmed(r.withdrawal,owner,(await effectiveConfig(q,owner)).treasury)||BigInt(r.amount)!==money(amount))throw new Error('Tracked withdrawal does not match this owner, amount or current confirmed receipt.');

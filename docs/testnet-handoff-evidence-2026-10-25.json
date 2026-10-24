@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-10-24T21:40:29.885Z",
+  "verifiedAt": "2026-10-24T22:31:22.902Z",
   "chainId": 31611,
   "withdrawal": {
     "hash": "0x1c2044fd314e3355d946fe281de24e3fc24865a76a1338fc4e5eb1526c6e9038",
@@ -14,7 +14,36 @@
   },
   "handoffId": "a3d5f2f1-cc3e-427d-bbbc-88402949ce0f",
   "repayment": {
-    "status": "not yet signed or verified"
+    "state": "confirmed",
+    "chainId": 31611,
+    "txHash": "0x0fef1f0fd2b4121e31318a170ccf4024d0f4586dda243813d4fbd47c601e1f03",
+    "message": "The owner repayment call and exact MUSD burn agree on chain.",
+    "explorerUrl": "https://explorer.test.mezo.org/tx/0x0fef1f0fd2b4121e31318a170ccf4024d0f4586dda243813d4fbd47c601e1f03",
+    "blockNumber": "16348090",
+    "blockHash": "0xff9f31ab10fe94c32c08d88eba61d963d54d4937d90d565a59e8f67521249824",
+    "confirmations": "27",
+    "requiredConfirmations": 2,
+    "kind": "repayment",
+    "amountBaseUnits": "500000000000000000",
+    "amount": "0.5",
+    "token": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+    "from": "0x2c7ffa7b22b5d75b390f7bca5d75be0475c85b31",
+    "to": "0x0000000000000000000000000000000000000000",
+    "sender": "0x2c7ffa7b22b5d75b390f7bca5d75be0475c85b31",
+    "contract": "0xcdf7028ceab81fa0c6971208e83fa7872994bee5"
   },
-  "scope": "testnet two-transaction workflow; V1 buffer is a planning value, not contract-enforced"
+  "scope": "testnet two-transaction workflow; V1 buffer is a planning value, not contract-enforced",
+  "handoff": {
+    "id": "a3d5f2f1-cc3e-427d-bbbc-88402949ce0f",
+    "amountBaseUnits": "500000000000000000",
+    "repaymentTxHash": "0x0fef1f0fd2b4121e31318a170ccf4024d0f4586dda243813d4fbd47c601e1f03",
+    "repaymentStatus": "confirmed",
+    "createdAt": "2026-10-24 21:39:57.573436+00",
+    "withdrawalTxHash": "0x1c2044fd314e3355d946fe281de24e3fc24865a76a1338fc4e5eb1526c6e9038",
+    "withdrawalStatus": "confirmed",
+    "currentTreasury": true,
+    "canReview": false,
+    "verified": true
+  },
+  "residualWithdrawnAmount": "0.5 MUSD retained in owner wallet; funds are fungible"
 }

@@ -53,3 +53,7 @@ Public payment-request pages now connect to OKX, simulate and review an exact MU
 ### Receivable accepted on testnet
 
 `TEST-AR-20261025-01`: owner sent 1 test MUSD directly to V1 treasury, transaction `0xb42f2f246d6149f3bcb315f255b24efe2d9df200f9facaa2ab26bf3f83eabee1`, canonical block 16347269, Transfer log 0. RPC verified amount/token/recipient/confirmation; authenticated browser matched the transfer and displayed `received`, received 1 / outstanding 0. Treasury displayed 100 MUSD afterwards. This is a self-funded workflow acceptance, not customer revenue. Evidence: `testnet-receivable-evidence-2026-10-25.json`. Subsequent treasury wallet reconnection returned rejected; no new withdrawal or repayment sent.
+
+### Withdrawal-to-repayment acceptance completed
+
+Handoff `a3d5f2f1-cc3e-427d-bbbc-88402949ce0f` now has a confirmed 1 MUSD withdrawal (`0x1c2044fd314e3355d946fe281de24e3fc24865a76a1338fc4e5eb1526c6e9038`) and confirmed 0.5 MUSD borrower repayment (`0x0fef1f0fd2b4121e31318a170ccf4024d0f4586dda243813d4fbd47c601e1f03`). Repayment was reduced before preparation to preserve the protocol minimum debt. These are separate transactions with separate receipts. V2 deployment, owner/reviewer signature flow and migration remain incomplete.

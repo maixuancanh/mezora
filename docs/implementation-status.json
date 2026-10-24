@@ -36,7 +36,7 @@
     "Complete final project deck and 2-minute pitch video",
     "Update submission narrative with actual testnet evidence",
     "Check live AKINDO requirements and cutoff; submit with human authorization",
-    "Run remaining authenticated Workbench acceptance: user OKX team sessions, real receivable allocation, withdrawal-to-repayment handoff.",
+    "Run remaining authenticated Workbench acceptance: user OKX team sessions, V2 deployment and owner/reviewer signature acceptance.",
     "Optional V2 deployment, wallet acceptance and migration are not complete."
   ],
   "hosted_url": "https://mezora.vercel.app",
@@ -107,6 +107,16 @@
         "block": 16347269,
         "logIndex": 0,
         "scope": "self-funded testnet acceptance only"
+      },
+      "live_withdrawal_repayment_handoff": {
+        "id": "a3d5f2f1-cc3e-427d-bbbc-88402949ce0f",
+        "withdrawalAmount": "1",
+        "repaymentAmount": "0.5",
+        "withdrawalTxHash": "0x1c2044fd314e3355d946fe281de24e3fc24865a76a1338fc4e5eb1526c6e9038",
+        "repaymentTxHash": "0x0fef1f0fd2b4121e31318a170ccf4024d0f4586dda243813d4fbd47c601e1f03",
+        "withdrawalState": "confirmed",
+        "repaymentState": "confirmed",
+        "scope": "two separate testnet transactions, not atomic"
       }
     },
     "limits": [

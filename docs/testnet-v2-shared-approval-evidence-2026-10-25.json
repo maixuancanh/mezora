@@ -1,0 +1,28 @@
+{
+  "verifiedAt": "2026-10-25T06:34:48.032Z",
+  "chainId": 31611,
+  "reviewId": "dbd4d536-1ea4-4230-83ff-ab557a25351a",
+  "status": "confirmed",
+  "txHash": "0xb2a92d3e60b9be19051eed2ddf5d603b85ccb8d9d79198bcc5e5de7a3cca3930",
+  "address": "0x54bdde1c3be2e8fa178a55ae06700160846002ec",
+  "blockNumber": "16355049",
+  "blockHash": "0xd8ca6e06815e8d2b7f479e81484b64cd8980ccf332c6e661e4e2dc9adc3541fe",
+  "digest": "0x35df0bd8a818527ed91188608f37ddbf6113610ce418a86070f61adfde8e5cb8",
+  "request": {
+    "nonce": "37393011201862523881855337401953635828130286011884863407300380807572873057628",
+    "deadline": "1792911432",
+    "policyVersion": "2"
+  },
+  "owner": "0x2c7FFA7b22B5D75b390f7BCA5D75bE0475C85b31",
+  "reviewer": "0x018afE2Be696274bCb3A33B2FB1487F96f649bd6",
+  "amount": "0",
+  "action": "Unpause",
+  "nonceConsumed": true,
+  "ownerSignatureVerified": true,
+  "reviewerSignatureVerified": true,
+  "ownerOnlyRejectedAtPreviousBlock": true,
+  "amountMusd": "0",
+  "fundedPaymentAcceptance": false,
+  "v1MigrationPerformed": false,
+  "scope": "Zero-MUSD pause/unpause shared authorization acceptance; no V2 funded payment tested"
+}

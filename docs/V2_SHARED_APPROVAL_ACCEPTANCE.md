@@ -18,6 +18,6 @@ Scope: test the deployed V2 owner/reviewer authorization using a pause and share
 
 ## Evidence status
 
-V2 deployment is confirmed in `testnet-v2-deployment-evidence-2026-10-25.json`. Shared approval acceptance remains pending actual wallet signatures and receipt verification. Preserve the pause hash, request ID, digest and unpause hash when completed.
+V2 deployment is confirmed in `testnet-v2-deployment-evidence-2026-10-25.json`. Shared approval acceptance confirmed at block 16355049: `0xb2a92d3e60b9be19051eed2ddf5d603b85ccb8d9d79198bcc5e5de7a3cca3930`. Both signatures recovered to the configured signers; exact calldata, successful canonical receipt, Unpause event, consumed nonce and unpaused receipt-block state verified. Missing-reviewer execution independently simulated at the preceding block and reverted with InvalidQuorum. Evidence: `testnet-v2-shared-approval-evidence-2026-10-25.json`; rerun `npx tsx scripts/verify-v2-shared-approval.ts`. This establishes zero-value shared authorization; funded V2 payments remain untested.
 
 Local validation: eight new helper/service tests cover fixed typed fields, digest sensitivity, numeric bounds, signature shape/canonicality, unauthorized signers, owner authentication, pinned chain/config and missing reviewer rejection. Full suite: 174 passed, 2 skipped. Production build and TypeScript passed before deployment.

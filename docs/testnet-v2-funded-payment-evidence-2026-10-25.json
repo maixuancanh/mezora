@@ -1,0 +1,92 @@
+{
+  "verifiedAt": "2026-10-25T07:16:55.796Z",
+  "scope": "Self-funded one-MUSD V2 bill acceptance; not customer revenue or audit",
+  "treasury": "0x54bdde1c3be2e8fa178a55ae06700160846002ec",
+  "owner": "0x2c7FFA7b22B5D75b390f7BCA5D75bE0475C85b31",
+  "reviewer": "0x018afE2Be696274bCb3A33B2FB1487F96f649bd6",
+  "amountMusd": "1",
+  "billId": "0xa1105809ca64cc3c8e34d3311d86038454c6d317dce23073475d3b085a9712c1",
+  "termsHash": "0x542b98e3b0bee30f6e080d03eb1ed1fef38601cec2dea7861608919f09d29aff",
+  "funding": {
+    "status": "confirmed",
+    "kind": "funding",
+    "chainId": 31611,
+    "txHash": "0xac7c89b6786a49f3e7db85992175ad8f2568c87fec42cb7b43d4a289fafab031",
+    "blockNumber": "16355583",
+    "blockHash": "0x0b332bf11f9ffcdca6be76ef8e0dc588e4f2dd5c9fabe1a235171ddd1c8b7527",
+    "treasury": "0x54bdde1c3be2e8fa178a55ae06700160846002ec",
+    "amount": "1",
+    "token": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+    "recipient": "0x54bdde1c3be2e8fa178a55ae06700160846002ec",
+    "billId": "0xa1105809ca64cc3c8e34d3311d86038454c6d317dce23073475d3b085a9712c1",
+    "termsHash": "0x542b98e3b0bee30f6e080d03eb1ed1fef38601cec2dea7861608919f09d29aff",
+    "transfers": [
+      {
+        "from": "0x2c7FFA7b22B5D75b390f7BCA5D75bE0475C85b31",
+        "to": "0x54BddE1c3be2E8fa178A55ae06700160846002ec",
+        "amount": "1000000000000000000",
+        "index": 1
+      }
+    ],
+    "v1MigrationPerformed": false
+  },
+  "approvals": [
+    {
+      "action": "Reserve",
+      "txHash": "0x74ca831f19151a25dc32e354fc07b692b624e9ac10b8e5382c227bc4baad8db5",
+      "blockNumber": "16355624",
+      "blockHash": "0x6f8ee1b641522583e0f29782df2e2d1f4410640908a8b1d4d4ee3ac6e000b817",
+      "digest": "0x99591fe4a71a8cb7133b14d83ecb9ec5e1af46d5bdd7b55cf0fe785cfbfa9752",
+      "request": {
+        "action": 0,
+        "nonce": "90879528375022084228766207571370403292584325434982029620232609131329231093794",
+        "deadline": "1792914003",
+        "policyVersion": "2"
+      },
+      "bothSignersVerified": true,
+      "nonceConsumed": true
+    },
+    {
+      "action": "Pay",
+      "txHash": "0xa31e7a7f0064f90e628e416c3b2d609c9a004ad642939413cd7fd697d8c49d57",
+      "blockNumber": "16355664",
+      "blockHash": "0x03376f4bbbdaddab4bd4c2f03be7a5ddb33c4356d389fabe4e99e3484fdb883d",
+      "digest": "0xe424681c87496922ff281f80a43dab0cafd73581c8c1736519a1b99a1d8dc4d8",
+      "request": {
+        "action": 1,
+        "nonce": "1521794980490099824593078054891896512000008662915104842076468831311097581169",
+        "deadline": "1792914199",
+        "policyVersion": "2"
+      },
+      "bothSignersVerified": true,
+      "nonceConsumed": true
+    }
+  ],
+  "payment": {
+    "status": "confirmed",
+    "kind": "payment",
+    "chainId": 31611,
+    "txHash": "0xa31e7a7f0064f90e628e416c3b2d609c9a004ad642939413cd7fd697d8c49d57",
+    "blockNumber": "16355664",
+    "blockHash": "0x03376f4bbbdaddab4bd4c2f03be7a5ddb33c4356d389fabe4e99e3484fdb883d",
+    "treasury": "0x54bdde1c3be2e8fa178a55ae06700160846002ec",
+    "amount": "1",
+    "token": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+    "recipient": "0x018afE2Be696274bCb3A33B2FB1487F96f649bd6",
+    "billId": "0xa1105809ca64cc3c8e34d3311d86038454c6d317dce23073475d3b085a9712c1",
+    "termsHash": "0x542b98e3b0bee30f6e080d03eb1ed1fef38601cec2dea7861608919f09d29aff",
+    "reviewId": "d1fab9c7-9272-4570-9383-f5ff06db190c",
+    "digest": "0xe424681c87496922ff281f80a43dab0cafd73581c8c1736519a1b99a1d8dc4d8",
+    "nonceConsumed": true,
+    "transfers": [
+      {
+        "from": "0x54BddE1c3be2E8fa178A55ae06700160846002ec",
+        "to": "0x018afE2Be696274bCb3A33B2FB1487F96f649bd6",
+        "amount": "1000000000000000000",
+        "index": 0
+      }
+    ],
+    "v1MigrationPerformed": false
+  },
+  "v1MigrationPerformed": false
+}

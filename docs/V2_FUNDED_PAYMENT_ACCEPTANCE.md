@@ -16,7 +16,7 @@ The UI displays amount and recipient before each signature, separates funding/re
 
 ## Acceptance status
 
-Implementation prepared; funded test transactions are pending the user's OKX confirmations. Do not mark the full V2 funded payment as accepted until funding, reserve and payment receipts have been verified. Shared unpause acceptance is separately confirmed in `testnet-v2-shared-approval-evidence-2026-10-25.json`.
+Funded test payment accepted on Mezo Testnet. Funding, Reserve and Pay receipts independently verified with exact token transfers, matching bill terms and recipient, both cryptographic signer roles and consumed nonces. Final payment: `0xa31e7a7f0064f90e628e416c3b2d609c9a004ad642939413cd7fd697d8c49d57`, block 16355664. Evidence: `testnet-v2-funded-payment-evidence-2026-10-25.json`. V2 test balance and reserved funds are zero; bill is Paid. This proves this fixed test case, not general production readiness or an audit. Shared unpause acceptance is separately confirmed in `testnet-v2-shared-approval-evidence-2026-10-25.json`.
 
 ## Wallet sequence
 

@@ -1,0 +1,5 @@
+
+# Preserve exported submission artifacts byte-for-byte on Windows.
+*.pdf binary
+*.pptx binary
+*.mp4 binary

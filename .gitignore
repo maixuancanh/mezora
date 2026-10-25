@@ -19,3 +19,16 @@ contracts/cache/
 
 # Isolated Next verification output
 .next-build/
+
+# Local planning, agent instructions and media production intermediates
+AGENTS.md
+docs/superpowers/
+docs/implementation-status.json
+docs/next-phase-2026-10-23.md
+docs/okx-rollout-2026-10-25.md
+docs/OMNIVOICE_VIDEO_2026-10-25.md
+deliverables/source/
+deliverables/validation.json
+deliverables/Mezora-Pitch-2min-2026-10-25.mp4
+docs/separate-deployment-comparison.json
+scripts/check-handoff-current.ts

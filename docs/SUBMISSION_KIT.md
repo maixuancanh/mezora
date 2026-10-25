@@ -1,66 +1,65 @@
-# Mezora — submission working kit
+# Mezora submission kit
 
-Prepared 25 October 2026. Track positioning is based on the saved contest research and must be rechecked against the live submission form before submission. This file is prepared material, not a submitted entry.
+Updated 25 October 2026. Prepared copy, not a submitted entry. Saved contest requirements were checked on 23 October. A fresh web request to AKINDO on 25 October could not retrieve the page. Current form, cutoff and timezone still need a browser check.
 
 ## Public links
 
 - App: https://mezora.vercel.app
-- Treasury setup: https://mezora.vercel.app/setup
-- Borrower repayment: https://mezora.vercel.app/repay
+- Workbench: https://mezora.vercel.app/workbench
+- Repayment: https://mezora.vercel.app/repay
+- Completed V2 payment and receipts: https://mezora.vercel.app/setup/v2/payment
 - Source: https://github.com/maixuancanh/mezora/tree/build/mezora-mvp
+- Contest: https://app.akindo.io/wave-hacks/OVOO0gdrVU8379D10?tab=overview
 
-## Short description
+## Copy-ready form content
 
-Mezora is a business treasury workspace for MUSD on Mezo. Owners turn bills into cash commitments, reserve funds, review payments and reconcile confirmed receipts. A separate repayment workspace reads a borrower's Mezo Trove and prepares an owner-approved partial debt repayment.
+**Name:** Mezora
 
-## Primary track
+**Category:** MUSD Business Treasury Workspace
 
-Track 2 — Access and Distribution: a usable interface that connects MUSD business payments, budget commitments and receipt tracking. Track 1 should only be claimed with the exact demonstrated borrowing/debt integration scope, and should disclose whether repayment execution has been proven.
+**TL;DR:** Mezora helps small teams turn MUSD bills into cash commitments, approve payments and reconcile confirmed receipts on Mezo.
 
-## What the working prototype includes
+**Problem and solution:** A wallet balance does not show how much cash a business has already promised to spend. Mezora connects bills, reserved MUSD, an operating buffer and a 30-day cash plan. Owners review payments before signing, inspect receipts and track incoming customer payments. Invoice checks flag duplicates, changed recipients and budget issues. Documents become reviewed drafts, while CSV imports, recurring drafts and statement exports reduce repetitive work.
 
-- Browser scenario mode with clearly simulated funds and persistent records.
-- Owner-created Mezo testnet treasury with immutable owner/token and exact deployment validation.
-- Bill terms bound to a recipient, amount, version hash and unique on-chain commitment id.
-- Reserve/pay/cancel workflow and withdrawals limited to unreserved funds.
-- Exact MUSD approvals, owner signatures and request ids/deadlines for protected deposits/withdrawals.
-- Receipt reconciliation and missing-hash recovery; a broadcast is not shown as a confirmed payment.
-- Operating buffer and surplus proposals. These are deterministic recommendations, not an autonomous executor or a connected language model.
-- Mezo Trove lookup and partial repayment preparation with minimum-debt constraints and simulation.
-- Explicit OKX Wallet selection, SIWE login and client-side calldata validation.
+**Mezo integration:** MUSD is the payment and accounting unit. The active V1 treasury binds each commitment to a bill ID, terms hash, amount and recipient. A borrower workspace reads a Mezo Trove and prepares partial MUSD repayment while preserving protocol debt constraints. Withdrawal-to-repayment records link two separately signed transactions. A separately deployed V2 enforces owner and reviewer signatures in its contract. Shared unpause and one complete 1-MUSD reserve/payment flow are verified on Mezo Testnet.
 
-## Two-minute demo narration and screen sequence
+**Target users:** Small teams and independent businesses that hold MUSD and pay contractors or suppliers. The prototype targets desktop browsers with OKX Wallet. No geographic adoption or customer base is claimed.
 
-1. **0:00–0:15 — Problem:** “A business cash balance does not tell you how much is already committed. Mezora puts bills, reserved funds and payment evidence in one workspace.” Show overview.
-2. **0:15–0:40 — Bill:** Create a bill, review recipient/amount/due date and verify its terms. State the chosen environment. If using scenario mode, say explicitly: “This segment uses simulated funds.”
-3. **0:40–1:05 — Reserve:** Reserve the bill and show that available cash decreases while the treasury balance is unchanged. Explain that reservations are owner-cancelable budget allocations, not vendor escrow.
-4. **1:05–1:30 — Payment:** Review the request and show owner approval plus a confirmed receipt if available. If no real receipt exists, demonstrate the labelled scenario and disclose that the live signature step remains pending. Never present a local receipt as Mezo testnet proof.
-5. **1:30–1:45 — Runway:** Show reserved funds, operating buffer and the surplus proposal. Explain that the owner decides; nothing executes automatically.
-6. **1:45–2:00 — Mezo integration:** Show the borrower page. If the borrower has no Trove, show that honest state. Only show repayment savings or execution when backed by the actual transaction receipt.
+**Track:** Track 2 — Access and Distribution is the primary positioning from saved research. Demonstrated borrower repayment can support a Track 1 explanation if the live form permits multiple tracks. Do not claim borrowing origination or atomic treasury repayment.
 
-## Pitch/deck outline
+**Stack:** TypeScript, Next.js, React, PostgreSQL, viem, Solidity, Foundry and selected OpenZeppelin primitives. OKX injected/EIP-6963 selection, SIWE authentication, PDF parsing and bounded English OCR. Recommendations are deterministic rules, not an LLM or unattended fund executor.
 
-1. Business cash has commitments: target user and concrete bill example.
-2. Workflow: bill → reserve → review → owner approval → receipt.
-3. Why MUSD/Mezo: stable-denominated bills and a separate borrower debt-repayment path.
-4. Security model: owner-controlled treasury, exact requests, no arbitrary execution, persistent reconciliation.
-5. Working demo and evidence: show live links and clearly separate scenario, local EVM and actual testnet receipts.
-6. Next scope: inbound invoices, recurring proposals and batch review; these are future features, not shipped capabilities.
+**Readiness:** Working hosted prototype on Mezo Testnet, chain 31611. BTC pays gas. Official testnet MUSD: `0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503`.
 
-## Attribution
+**Hackathon work:** Treasury commitments, receipt reconciliation, business cash planning, receivable allocation, statement/document workflows, borrower repayment handoff and separate V2 approval acceptance. Source attribution is in THIRD_PARTY_NOTICES.md and related reuse documents.
 
-UI/workflow research includes Midday and Mercury Bill Pay as product references, not verified hackathon winners. Automation was informed by Dreambot Builder research; the actual implementation is a deterministic proposal engine. Refer to THIRD_PARTY_NOTICES.md, UI_INSPIRATION.md, DOMAIN_AND_AUTOMATION.md and the implementation plan for exact source reuse and licenses. Do not imply commercial affiliation or endorsement.
+**Proposed milestones:** Weeks 1–2: observed user tests and approval UX. Weeks 3–4: general V2 bill integration and recovery/rotation design. After independent security review: limited pilot and mainnet readiness assessment. No mainnet release date is promised.
 
-## Remaining evidence gates
+**Team fields:** Enter the user's chosen public name, role and X/LinkedIn in the form. Do not infer identity or contacts from wallet addresses or repository handles.
 
-- Connect the intended owner account in OKX. If it differs from the previously supplied account, inspect gas/token balances for the new account; treasury ownership follows the connected account.
-- Sign one treasury deployment on Mezo testnet; record confirmed creation receipt, contract address and verified runtime/owner/token.
-- Obtain testnet MUSD, approve only the reviewed amount, deposit and confirm.
-- Complete a bill reserve/payment and save the explorer receipt plus reconciled state.
-- Actual repayment requires an active borrower Trove, enough wallet MUSD and BTC gas. Existing adapter/lookup alone is not proof of repayment execution.
-- Record and export the final demo video/deck after choosing the demonstrated evidence scope.
-- Verify the contest cutoff and required fields in AKINDO; submit with human authorization. No submission has occurred.
+## Confirmed evidence
+
+| Workflow | Transaction |
+| --- | --- |
+| V1 bill payment, 1 MUSD | https://explorer.test.mezo.org/tx/0x2926b0c09b1599c1ed5f5717abfde19054aff3a877a3ea058e598323dca48ba9 |
+| Borrower repayment, 1 MUSD | https://explorer.test.mezo.org/tx/0x525ecdb461231c0e6cb355a1525c2adc966156179c671b1c993a479ed7759164 |
+| Receivable transfer, 1 MUSD, owner-reviewed allocation | https://explorer.test.mezo.org/tx/0xb42f2f246d6149f3bcb315f255b24efe2d9df200f9facaa2ab26bf3f83eabee1 |
+| Withdrawal, 1 MUSD | https://explorer.test.mezo.org/tx/0x1c2044fd314e3355d946fe281de24e3fc24865a76a1338fc4e5eb1526c6e9038 |
+| Separate repayment, 0.5 MUSD | https://explorer.test.mezo.org/tx/0x0fef1f0fd2b4121e31318a170ccf4024d0f4586dda243813d4fbd47c601e1f03 |
+| V2 shared unpause | https://explorer.test.mezo.org/tx/0xb2a92d3e60b9be19051eed2ddf5d603b85ccb8d9d79198bcc5e5de7a3cca3930 |
+| V2 shared reserve | https://explorer.test.mezo.org/tx/0x74ca831f19151a25dc32e354fc07b692b624e9ac10b8e5382c227bc4baad8db5 |
+| V2 shared payment, 1 MUSD | https://explorer.test.mezo.org/tx/0xa31e7a7f0064f90e628e416c3b2d609c9a004ad642939413cd7fd697d8c49d57 |
+
+Structured proofs: `testnet-*-evidence-2026-10-25.json`. All are self-funded acceptance tests, not customer revenue or adoption.
 
 ## Claim boundaries
 
-No claim of users, revenue, partnerships, autonomous agents, production audit, guaranteed savings, mainnet deployment or completed contest submission. Hosted receipt reconciliation is on demand; no continuously running production worker has been established.
+- Main workspace uses V1. Its team approvals are application policy; owner can call V1 directly.
+- V2 enforces owner plus immutable reviewer quorum in a separate acceptance flow. No V1 migration or general V2 workspace integration is claimed.
+- Withdrawal and repayment are separate. Failed repayment leaves withdrawn funds in the wallet. The test withdrew 1 MUSD and repaid 0.5 MUSD.
+- Receivable allocation is reviewed, not automatic matching. Recurring bills generate drafts, not automatic transfers.
+- Contracts are unaudited. No mainnet readiness, autonomous fund management, users, revenue or guaranteed savings claimed. Hosted reconciliation is on demand.
+
+## Remaining submission gates
+
+Saved requirements list four mandatory items: working deployment, public source, project/product deck and a two-minute pitch video. App and source are available. Deck narrative is in PITCH_DECK_CONTENT.md; exported deck remains pending. Recording script is in DEMO_RECORDING_SCRIPT.md; finished video remains pending. Check live form and cutoff before uploading. No submission has occurred.

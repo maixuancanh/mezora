@@ -83,12 +83,32 @@ See docs/THIRD_PARTY_NOTICES.md, docs/UI_REUSE.md and docs/DOMAIN_REUSE.md. Drea
 
 ## Current delivery boundary
 
-Implemented: local working workspace, persistent scenario, treasury contract, tests, EOA live transaction preparation/reconciliation, read-only proposals, local EVM evidence and official MUSD read verification.
+The business workspace includes bills, cash commitments, a 30-day cash plan, saved scenarios, invoice checks, CSV import, document-to-draft extraction, recurring drafts, customer receivables, statements and application team approvals. Proposals and explanations are deterministic. Recurring bills create drafts, not unattended payments.
 
-Next phase: /setup, /repay and dedicated SQL are implemented; see docs/next-phase-2026-10-23.md and implementation-status.json for current hosted/live evidence. Customer checkout, batch/recurring execution and submission materials remain planned. Local tests do not establish an owner testnet transaction.
+V1 remains the active owner-controlled workspace treasury. Application reviewer approval does not prevent its owner from calling V1 directly. The separately deployed V2 enforces owner plus immutable reviewer quorum in the contract. V2 test acceptance has proven shared unpause and one complete 1-MUSD funding/reserve/payment flow. This is a separate acceptance page, not a migration of the main workspace or general V2 bill support.
+
+### Verified Mezo Testnet evidence
+
+| Workflow | Evidence |
+| --- | --- |
+| Owner bill payment, 1 MUSD | [Payment](https://explorer.test.mezo.org/tx/0x2926b0c09b1599c1ed5f5717abfde19054aff3a877a3ea058e598323dca48ba9) |
+| Borrower repayment, 1 MUSD | [Repayment](https://explorer.test.mezo.org/tx/0x525ecdb461231c0e6cb355a1525c2adc966156179c671b1c993a479ed7759164) |
+| Receivable, 1 MUSD, reviewed allocation | [Incoming transfer](https://explorer.test.mezo.org/tx/0xb42f2f246d6149f3bcb315f255b24efe2d9df200f9facaa2ab26bf3f83eabee1) |
+| Withdraw 1 MUSD, then repay 0.5 MUSD | [Withdrawal](https://explorer.test.mezo.org/tx/0x1c2044fd314e3355d946fe281de24e3fc24865a76a1338fc4e5eb1526c6e9038), [repayment](https://explorer.test.mezo.org/tx/0x0fef1f0fd2b4121e31318a170ccf4024d0f4586dda243813d4fbd47c601e1f03) |
+| V2 owner + reviewer unpause | [Shared execution](https://explorer.test.mezo.org/tx/0xb2a92d3e60b9be19051eed2ddf5d603b85ccb8d9d79198bcc5e5de7a3cca3930) |
+| V2 owner + reviewer bill payment, 1 MUSD | [Payment](https://explorer.test.mezo.org/tx/0xa31e7a7f0064f90e628e416c3b2d609c9a004ad642939413cd7fd697d8c49d57) |
+
+These are self-funded testnet acceptance transactions, not customer revenue. The withdrawal/repayment path uses two separately signed transactions and retains the unused 0.5 MUSD in the owner wallet. Token fungibility does not prove which withdrawn units funded a later payment.
+
+- V2: `0x54bdde1c3be2e8fa178a55ae06700160846002ec`
+- V1 acceptance treasury: `0xb06cFA71F295922B96501c34744ACf87Afa00351`
+- [Completed V2 test and receipts](https://mezora.vercel.app/setup/v2/payment)
+- Structured proofs: `docs/testnet-*-evidence-2026-10-25.json`.
+
+Contracts are unaudited and signers on V2 cannot rotate. Current deployment is testnet. No claim of mainnet readiness, adoption, autonomous execution or completed contest submission. A final video, exported project deck and live AKINDO form check remain release tasks.
 
 ## Wallet integration (25 October 2026)
 
 The three app pages now select OKX Wallet explicitly, using its dedicated injected namespace, labelled provider fallback, or EIP-6963 announcement. An unrelated window.ethereum provider is not selected. SIWE, exact calldata review, account/network checks and owner signatures remain required. Switching wallets may change the owner address: a treasury is bound to the account that actually deploys it. No assumption is made that the previously supplied address is present in OKX.
 
-See docs/SUBMISSION_KIT.md for truthful demo and submission copy; live treasury/payment receipts and final video remain pending until completed.
+See docs/SUBMISSION_KIT.md for submission copy and docs/DEMO_RECORDING_SCRIPT.md for the two-minute recording sequence. Testnet treasury, payment and repayment receipts are confirmed; final video and exported deck remain pending.

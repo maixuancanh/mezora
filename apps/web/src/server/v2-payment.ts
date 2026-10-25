@@ -10,6 +10,16 @@ import {paymentAmount,paymentId,paymentTermsHash,paymentTypedData,paymentDigest,
 import {v2State} from './v2-acceptance';
 const ns='live:'+acceptanceOwner.toLowerCase(),same=(a:string,b:string)=>a.toLowerCase()===b.toLowerCase();
 export interface PaymentReview{id:string;request:PaymentRequest;digest:string;ownerSignature?:Hex;reviewerSignature?:Hex}
+export async function paymentReceipts(db:Database){
+ const rows=(await db.query<{body:{status:string;kind:string;txHash:string;blockNumber:string;blockHash:string;treasury:string;token:string;amount:string;recipient:string}}>("SELECT body FROM audit_events WHERE workspace_id=$1 AND action='v2.payment.confirm' ORDER BY created_at DESC LIMIT 100",[ns])).rows;
+ const receipts:Record<string,{txHash:string;blockNumber:string;amount:string}>={};
+ for(const {body:b} of rows){
+  if(!['funding','reserve','payment'].includes(b.kind)||receipts[b.kind]||b.status!=='confirmed'||b.amount!=='1'||!same(b.treasury,acceptanceTreasury)||!same(b.token,officialTestnetMusd)||!same(b.recipient,b.kind==='funding'?acceptanceTreasury:acceptanceReviewer)||!/^0x[0-9a-f]{64}$/i.test(b.txHash))continue;
+  // Do not resurrect a receipt from a block that no longer belongs to the canonical chain.
+  const block=await publicClient().getBlock({blockNumber:BigInt(b.blockNumber)});if(block.hash===b.blockHash)receipts[b.kind]={txHash:b.txHash,blockNumber:b.blockNumber,amount:b.amount};
+  if(Object.keys(receipts).length===3)break;
+ }return receipts;
+}
 export async function paymentState(){
  const state=await v2State(),p=publicClient(),blockNumber=BigInt(state.blockNumber),block=await p.getBlock({blockNumber});
  const [balance,reserved,buffer,cap,commitment]=await Promise.all([

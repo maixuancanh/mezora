@@ -7,7 +7,7 @@ vi.mock('../packages/db/src/database',()=>({database:async()=>({query:m.query,tr
 vi.mock('../packages/db/src/workspace',()=>({ensureWorkspace:vi.fn()}));vi.mock('../packages/db/src/persistence',()=>({appendAuditEvent:m.audit}));
 // Signature cryptography is exercised by v2-payment.test.ts. These fixtures isolate receipt validation.
 vi.mock('../packages/mezo/src/v2-payment',async original=>({...await original<object>(),paymentSigner:async(_r:unknown,s:string)=>s===('0x'+'11'.repeat(65))?'0x2c7FFA7b22B5D75b390f7BCA5D75bE0475C85b31':'0x018afE2Be696274bCb3A33B2FB1487F96f649bd6'}));
-import {paymentAction,paymentState} from '../apps/web/src/server/v2-payment';
+import {paymentAction,paymentState,paymentReceipts} from '../apps/web/src/server/v2-payment';
 import {acceptanceOwner,acceptanceReviewer} from '../packages/mezo/src/v2-acceptance';
 import {paymentAmount,paymentTermsHash,paymentDigest,type PaymentRequest} from '../packages/mezo/src/v2-payment';
 import {fundingCall,paymentId,paymentCall} from '../packages/mezo/src/v2-payment';
@@ -64,4 +64,9 @@ it('confirms reserve and pay only against their exact event, nonce and commitmen
 it('does not confirm payment without its token transfer or correct paid commitment',async()=>{
  outgoingReceipt(1);const receipt=await m.getTransactionReceipt();m.getTransactionReceipt.mockResolvedValue({...receipt,logs:receipt.logs.slice(1)});await expect(paymentAction({action:'verify',id,txHash:hash},null)).rejects.toThrow('transfer log');
  outgoingReceipt(1);m.readContract.mockResolvedValue(false);await expect(paymentAction({action:'verify',id,txHash:hash},null)).rejects.toThrow('commitment or nonce');
+});
+it('restores canonical verified receipts on reload without relying on wallet localStorage',async()=>{
+ m.query.mockResolvedValue({rows:[{body:{status:'confirmed',kind:'payment',txHash:hash,blockNumber:'100',blockHash,amount:'1',treasury:acceptanceTreasury,token:officialTestnetMusd,recipient:acceptanceReviewer}}]});m.getBlock.mockResolvedValue({hash:blockHash});
+ expect(await paymentReceipts({query:m.query} as never)).toMatchObject({payment:{txHash:hash,amount:'1'}});
+ m.getBlock.mockResolvedValue({hash:'0xchanged'});expect(await paymentReceipts({query:m.query} as never)).toEqual({});
 });

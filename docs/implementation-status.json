@@ -11,11 +11,11 @@
     "P3": "OKX deployment, deposit, bill reserve/payment and repayment accepted in user browser.",
     "P4": "Active Trove read and 1 MUSD repayment verified onchain: success receipt, exact owner burn, wallet balance and debt before/after.",
     "P5": "Hosted app and public source available; actual treasury payment and repayment proven; final deck/video and AKINDO submission pending.",
-    "P6": "Business Workbench deployed, local and hosted evidence recorded; remaining live acceptance and optional V2 rollout documented."
+    "P6": "Business Workbench implemented; testnet receivable allocation, withdrawal/repayment handoff, V2 shared unpause and fixed 1-MUSD reserve/payment accepted. Main workspace stays on V1."
   },
   "evidence": {
-    "unit_tests": 58,
-    "contract_tests": 18,
+    "unit_tests": 190,
+    "contract_tests": 35,
     "browser": "docs/browser-evidence.json",
     "local_evm": "docs/local-evm-evidence.json",
     "recovery": "docs/recovery-evidence.json",
@@ -24,7 +24,13 @@
     "hosted": "docs/hosted-deployment-evidence.json",
     "setup_local": "docs/setup-local-evidence.json",
     "setup_repay_browser": "docs/setup-repay-browser-evidence.json",
-    "testnet_repayment": "docs/testnet-repayment-evidence-2026-10-25.json"
+    "testnet_repayment": "docs/testnet-repayment-evidence-2026-10-25.json",
+    "unit_tests_skipped": 2,
+    "unit_tests_status": "passed",
+    "testnet_receivable": "docs/testnet-receivable-evidence-2026-10-25.json",
+    "testnet_handoff": "docs/testnet-handoff-evidence-2026-10-25.json",
+    "testnet_v2_shared": "docs/testnet-v2-shared-approval-evidence-2026-10-25.json",
+    "testnet_v2_funded": "docs/testnet-v2-funded-payment-evidence-2026-10-25.json"
   },
   "external_state": {
     "testnet_treasury_deployed": true,
@@ -33,11 +39,10 @@
     "submitted": false
   },
   "remaining": [
-    "Complete final project deck and 2-minute pitch video",
-    "Update submission narrative with actual testnet evidence",
-    "Check live AKINDO requirements and cutoff; submit with human authorization",
-    "Run remaining authenticated Workbench acceptance: user OKX team sessions, V2 deployment and owner/reviewer signature acceptance.",
-    "Optional V2 deployment, wallet acceptance and migration are not complete."
+    "Record and export final two-minute video and project deck",
+    "Inspect live AKINDO form, deadline/timezone and required fields before submission",
+    "Complete submission with user-controlled identity and final review",
+    "General V2 workspace integration/migration is future scope, not a submission completion claim"
   ],
   "hosted_url": "https://mezora.vercel.app",
   "public_repo": "https://github.com/maixuancanh/mezora",
@@ -66,7 +71,7 @@
       "receivables_and_reviewed_transfer_allocations"
     ],
     "verification": {
-      "application_tests": 157,
+      "application_tests": 190,
       "contract_tests": 35,
       "typecheck": "passed",
       "production_build": "passed",
@@ -140,16 +145,19 @@
         "v1StillActive": true,
         "migrationPerformed": false,
         "ownerReviewerExecutionAccepted": false
-      }
+      },
+      "v2_shared_approval": "docs/testnet-v2-shared-approval-evidence-2026-10-25.json",
+      "v2_funded_payment": "docs/testnet-v2-funded-payment-evidence-2026-10-25.json",
+      "ux_revision": "V2 payment progress, contextual feedback, completed state and canonical receipt restoration; browser visual verification pending (browser disabled in Work settings)"
     },
     "limits": [
       "Built-in English OCR was accepted on hosted PNG upload/review/draft. Hosted scanned PDF remains unverified; local scanned PDF OCR passed. Limits: 3 scanned pages, 4MP, 25s.",
       "Hosted file limit 4MiB, text PDF 10 pages; private source retained 7 days, deletion on access/upload.",
       "Team quorum is application policy on current V1; owner can call V1 directly outside app.",
-      "V2 deployed and runtime/config verified on Mezo testnet; owner + reviewer execution and migration remain unverified.",
-      "User OKX multi-member extension acceptance, new withdrawal-to-repayment handoff remain; real testnet receivable allocation passed.",
       "RPC can be unavailable; public receipt fails closed and supports refresh.",
-      "Statement history was reconciled but the transfer remained unclassified; it is not claimed as an exact bill match."
+      "Statement history was reconciled but the transfer remained unclassified; it is not claimed as an exact bill match.",
+      "V2 shared unpause and fixed 1-MUSD reserve/payment accepted in OKX. Main workspace remains V1; no V2 migration.",
+      "Receipt reconciliation is on demand. No continuously running production worker established."
     ],
     "report": "docs/WORKBENCH_RELEASE.md"
   }

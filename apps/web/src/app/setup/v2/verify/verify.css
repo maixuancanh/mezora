@@ -8,3 +8,29 @@
 .v2-acceptance pre{font-size:11px;margin-top:16px}
 .v2-acceptance [role=status]{padding:14px 18px;background:#edf5e9;border:1px solid #d6e6cb;border-radius:8px;width:100%}
 .v2-acceptance .error{padding:14px 18px;background:#fff3f0;border:1px solid #f7cbc0;border-radius:8px;width:100%}
+.payment-flow .setup-main>h1{text-wrap:balance}
+.payment-flow .setup-main>p,.payment-flow .setup-card>p{text-wrap:pretty}
+.payment-flow .setup-card{margin-top:24px;gap:20px}
+.payment-summary-top{display:flex;justify-content:space-between;gap:20px;align-items:center;width:100%}
+.payment-flow .payment-summary-top h2{font-size:40px;margin:8px 0 0;font-variant-numeric:tabular-nums}
+.payment-summary-top small{font-size:16px;color:#71816d;font-weight:500}
+.payment-eyebrow{font-size:11px;color:#71816d}
+.payment-badge{padding:5px 12px;border-radius:6px;background:#f3f5ef;color:#5f6e56;font-size:12px;white-space:nowrap}
+.payment-badge.complete{background:#eaf4e7;color:#365d35}
+.payment-progress{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%;padding:0;margin:0}
+.payment-progress li{border:1px solid #e0e7da;border-radius:8px;padding:16px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;font-size:12px}
+.payment-progress li.complete{background:#f4f8ef}
+.payment-progress li[aria-current=step]{border-color:#66836a}
+.payment-step-number{display:grid;place-items:center;width:25px;height:25px;border:1px solid #cbd8c3;border-radius:50%;margin-bottom:4px}
+.complete .payment-step-number{background:#245b48;color:#fff;border-color:#245b48}
+.payment-progress strong{font-size:14px}.payment-progress a{color:#245b48;text-decoration:underline;text-underline-offset:3px}
+.receipt-block{display:block;font-size:11px;color:#71816d}
+.payment-complete{width:100%;padding:22px;background:#edf6e8;border:1px solid #cddfc3;border-radius:9px;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.payment-flow .payment-complete h2{margin:0;font-size:23px}
+.payment-complete:focus,.payment-feedback:focus{outline:2px solid #66836a;outline-offset:4px}
+.payment-feedback{width:100%;scroll-margin-block:24px}.payment-feedback:empty{display:none}
+.payment-flow .payment-feedback [role=status],.payment-flow .payment-feedback .error{margin:0}
+.payment-hint{font-size:12px;color:#61765d;line-height:1.8}
+.payment-address{font-family:monospace;font-size:12px;overflow-wrap:anywhere}
+.approval-summary{display:flex;gap:30px;flex-wrap:wrap;justify-content:space-between;width:100%;padding:16px;background:#f7f8f5;border-radius:8px;font-size:13px}
+@media(max-width:620px){.payment-progress{grid-template-columns:1fr}.payment-progress li{display:grid;grid-template-columns:28px 1fr;align-items:center}.payment-progress li>span:not(.payment-step-number),.payment-progress li>a{grid-column:2}.payment-step-number{grid-row:1/4}.payment-summary-top{align-items:flex-start}.payment-eyebrow{font-size:9px}.payment-flow .payment-summary-top h2{font-size:32px}.payment-summary-top .payment-badge{font-size:11px;padding:4px 8px}}

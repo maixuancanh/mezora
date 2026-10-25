@@ -1,6 +1,6 @@
 # Mezora submission kit
 
-Updated 25 October 2026. Prepared copy, not a submitted entry. Saved contest requirements were checked on 23 October. A fresh web request to AKINDO on 25 October could not retrieve the page. Current form, cutoff and timezone still need a browser check.
+Updated 25 October 2026. Prepared copy, not a submitted entry. The official public overview was rechecked with Firecrawl on 25 October. Requirements are recorded in AKINDO_REQUIREMENTS_RECHECK_2026-10-25.md. Authenticated form and exact cutoff timezone still need a browser check.
 
 ## Public links
 
@@ -62,4 +62,4 @@ Structured proofs: `testnet-*-evidence-2026-10-25.json`. All are self-funded acc
 
 ## Remaining submission gates
 
-Saved requirements list four mandatory items: working deployment, public source, project/product deck and a two-minute pitch video. App and source are available. Deck narrative is in PITCH_DECK_CONTENT.md; exported deck remains pending. Recording script is in DEMO_RECORDING_SCRIPT.md; finished video remains pending. Check live form and cutoff before uploading. No submission has occurred.
+Saved requirements list four mandatory items: working deployment, public source, project/product deck and a two-minute pitch video. App and source are available. Deck narrative is in PITCH_DECK_CONTENT.md; exported seven-slide PowerPoint is deliverables/Mezora-Pitch-2026-10-25.pptx. Recording script is in DEMO_RECORDING_SCRIPT.md. A 120-second narrated slide pitch is exported to deliverables/Mezora-Pitch-2min-2026-10-25.mp4, with local synthetic English narration. It is not a live product screen recording. Public video hosting and user review are still pending. Check live form and cutoff before uploading. No submission has occurred.

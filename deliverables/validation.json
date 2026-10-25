@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-25",
+  "deck": {
+    "slides": 7,
+    "structure": "passed",
+    "layout": "passed",
+    "font": "Arial",
+    "visualReview": "all seven slide renders inspected"
+  },
+  "video": {
+    "kind": "narrated slide pitch, not live product screen recording",
+    "durationSeconds": 120,
+    "resolution": "1280x720",
+    "fps": 24,
+    "videoCodec": "h264",
+    "audioCodec": "aac",
+    "voice": "Microsoft Zira Desktop, local synthetic English, no voice cloning",
+    "meanVolumeDb": -20.6,
+    "maxVolumeDb": -2.6,
+    "render": "HyperFrames 0.8.196, drawelement capture, hardware GPU",
+    "checks": "0 errors; 8 structural monolithic-composition warnings reviewed; runtime/layout/motion passed; all seven midpoint snapshots inspected"
+  },
+  "files": [
+    {
+      "path": "deliverables/Mezora-Pitch-2026-10-25.pptx",
+      "bytes": 45065,
+      "sha256": "1b1743c1255fa2cf5bcae4052fbb60d225843d904adcd62efa369f81db45ea31"
+    },
+    {
+      "path": "deliverables/Mezora-Pitch-2026-10-25.pdf",
+      "bytes": 288394,
+      "sha256": "331245af7a751a61cceb06fe47761647a16c6c83f2b56104d7c1d347fde71df5"
+    },
+    {
+      "path": "deliverables/Mezora-Pitch-2min-2026-10-25.mp4",
+      "bytes": 3479679,
+      "sha256": "ec3c358a889adcafbd0b2021e9879760a17e14bfb3ab4af6a9d742a259879a59"
+    }
+  ],
+  "submitted": false,
+  "publicVideoHosting": false
+}

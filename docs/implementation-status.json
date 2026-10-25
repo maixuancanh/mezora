@@ -39,10 +39,10 @@
     "submitted": false
   },
   "remaining": [
-    "Record and export final two-minute video and project deck",
-    "Inspect live AKINDO form, deadline/timezone and required fields before submission",
-    "Complete submission with user-controlled identity and final review",
-    "General V2 workspace integration/migration is future scope, not a submission completion claim"
+    "Review video voice/content and select a public video hosting destination",
+    "Inspect authenticated AKINDO form and exact deadline timezone",
+    "Complete submission with user-supplied identity and final review",
+    "General V2 workspace integration/migration remains future scope"
   ],
   "hosted_url": "https://mezora.vercel.app",
   "public_repo": "https://github.com/maixuancanh/mezora",
@@ -160,5 +160,15 @@
       "Receipt reconciliation is on demand. No continuously running production worker established."
     ],
     "report": "docs/WORKBENCH_RELEASE.md"
+  },
+  "submission_artifacts": {
+    "deck_pptx": "deliverables/Mezora-Pitch-2026-10-25.pptx",
+    "deck_pdf": "deliverables/Mezora-Pitch-2026-10-25.pdf",
+    "video_script": "docs/DEMO_RECORDING_SCRIPT.md",
+    "video_exported": true,
+    "public_requirements_rechecked": "docs/AKINDO_REQUIREMENTS_RECHECK_2026-10-25.md",
+    "submitted": false,
+    "video": "deliverables/Mezora-Pitch-2min-2026-10-25.mp4",
+    "validation": "deliverables/validation.json"
   }
 }

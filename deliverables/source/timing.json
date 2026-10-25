@@ -1,0 +1,44 @@
+[
+  {
+    "slide": 1,
+    "start": 0,
+    "duration": 12.557007,
+    "voiceDuration": 11.757006802721088
+  },
+  {
+    "slide": 2,
+    "start": 12.557007,
+    "duration": 15.246531,
+    "voiceDuration": 14.446530612244898
+  },
+  {
+    "slide": 3,
+    "start": 27.803537,
+    "duration": 16.246848,
+    "voiceDuration": 15.446848072562359
+  },
+  {
+    "slide": 4,
+    "start": 44.050385,
+    "duration": 19.245896,
+    "voiceDuration": 18.445895691609977
+  },
+  {
+    "slide": 5,
+    "start": 63.296281,
+    "duration": 17.456145,
+    "voiceDuration": 16.656145124716552
+  },
+  {
+    "slide": 6,
+    "start": 80.752426,
+    "duration": 18.121134,
+    "voiceDuration": 17.321133786848073
+  },
+  {
+    "slide": 7,
+    "start": 98.87356,
+    "duration": 21.12644,
+    "voiceDuration": 18.321133786848073
+  }
+]

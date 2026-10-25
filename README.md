@@ -105,10 +105,10 @@ These are self-funded testnet acceptance transactions, not customer revenue. The
 - [Completed V2 test and receipts](https://mezora.vercel.app/setup/v2/payment)
 - Structured proofs: `docs/testnet-*-evidence-2026-10-25.json`.
 
-Contracts are unaudited and signers on V2 cannot rotate. Current deployment is testnet. No claim of mainnet readiness, adoption, autonomous execution or completed contest submission. A final video, exported project deck and live AKINDO form check remain release tasks.
+Contracts are unaudited and signers on V2 cannot rotate. Current deployment is testnet. No claim of mainnet readiness, adoption, autonomous execution or completed contest submission. A seven-slide deck (PPTX/PDF) and a 120-second narrated slide pitch (MP4) are in deliverables/. User review, public video hosting and the authenticated AKINDO form remain submission tasks.
 
 ## Wallet integration (25 October 2026)
 
 The three app pages now select OKX Wallet explicitly, using its dedicated injected namespace, labelled provider fallback, or EIP-6963 announcement. An unrelated window.ethereum provider is not selected. SIWE, exact calldata review, account/network checks and owner signatures remain required. Switching wallets may change the owner address: a treasury is bound to the account that actually deploys it. No assumption is made that the previously supplied address is present in OKX.
 
-See docs/SUBMISSION_KIT.md for submission copy and docs/DEMO_RECORDING_SCRIPT.md for the two-minute recording sequence. Testnet treasury, payment and repayment receipts are confirmed; final video and exported deck remain pending.
+See docs/SUBMISSION_KIT.md for submission copy and docs/DEMO_RECORDING_SCRIPT.md for the two-minute recording sequence. Testnet treasury, payment and repayment receipts are confirmed. The exported deck and narrated slide pitch are in deliverables/.

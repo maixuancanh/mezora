@@ -10,7 +10,7 @@
     "P2": "persistent PostgreSQL/PGlite workspace, EOA auth, exact requests and receipt recovery implemented",
     "P3": "OKX deployment, deposit, bill reserve/payment and repayment accepted in user browser.",
     "P4": "Active Trove read and 1 MUSD repayment verified onchain: success receipt, exact owner burn, wallet balance and debt before/after.",
-    "P5": "Hosted app and public source available; actual treasury payment and repayment proven; final deck/video and AKINDO submission pending.",
+    "P5": "Hosted app, public source, seven-slide deck and 120-second OmniVoice pitch exported; review, public video hosting and AKINDO submission pending.",
     "P6": "Business Workbench implemented; testnet receivable allocation, withdrawal/repayment handoff, V2 shared unpause and fixed 1-MUSD reserve/payment accepted. Main workspace stays on V1."
   },
   "evidence": {
@@ -168,7 +168,8 @@
     "video_exported": true,
     "public_requirements_rechecked": "docs/AKINDO_REQUIREMENTS_RECHECK_2026-10-25.md",
     "submitted": false,
-    "video": "deliverables/Mezora-Pitch-2min-2026-10-25.mp4",
-    "validation": "deliverables/validation.json"
+    "video": "deliverables/Mezora-Pitch-OmniVoice-2min-2026-10-25.mp4",
+    "validation": "deliverables/validation.json",
+    "voice_provenance": "deliverables/source/omnivoice/provenance.json"
   }
 }

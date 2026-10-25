@@ -105,7 +105,7 @@ These are self-funded testnet acceptance transactions, not customer revenue. The
 - [Completed V2 test and receipts](https://mezora.vercel.app/setup/v2/payment)
 - Structured proofs: `docs/testnet-*-evidence-2026-10-25.json`.
 
-Contracts are unaudited and signers on V2 cannot rotate. Current deployment is testnet. No claim of mainnet readiness, adoption, autonomous execution or completed contest submission. A seven-slide deck (PPTX/PDF) and a 120-second narrated slide pitch (MP4) are in deliverables/. User review, public video hosting and the authenticated AKINDO form remain submission tasks.
+Contracts are unaudited and signers on V2 cannot rotate. Current deployment is testnet. No claim of mainnet readiness, adoption, autonomous execution or completed contest submission. A seven-slide deck (PPTX/PDF) and a 120-second OmniVoice narrated slide pitch (deliverables/Mezora-Pitch-OmniVoice-2min-2026-10-25.mp4), generated on Google Colab T4 are in deliverables/. User review, public video hosting and the authenticated AKINDO form remain submission tasks.
 
 ## Wallet integration (25 October 2026)
 

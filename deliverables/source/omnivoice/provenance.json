@@ -1,0 +1,18 @@
+{
+  "model": "k2-fsa/OmniVoice",
+  "package": "omnivoice 0.2.1",
+  "execution": "official Google Colab notebook, GPU T4",
+  "notebook": "https://colab.research.google.com/github/k2-fsa/OmniVoice/blob/master/docs/OmniVoice.ipynb",
+  "mode": "voice design",
+  "profile": "female, teenager, high pitch, american accent",
+  "referenceVoice": null,
+  "cloning": false,
+  "sampleRate": 24000,
+  "channels": 1,
+  "durationSeconds": 112.96,
+  "sha256": "8d59042ea6f357420e814370f4638a551b6bf6ef74fdfa9c4658af36c86e8215",
+  "text": "narration.txt",
+  "qa": "Local faster-whisper base.en transcript reviewed for coverage and timing. Proper-name spelling in ASR is approximate. Human subjective naturalness review remains recommended.",
+  "voiceReplaced": "Microsoft Zira Desktop",
+  "originalVideoPreserved": true
+}

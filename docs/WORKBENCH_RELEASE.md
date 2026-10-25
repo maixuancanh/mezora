@@ -57,3 +57,7 @@ Public payment-request pages now connect to OKX, simulate and review an exact MU
 ### Withdrawal-to-repayment acceptance completed
 
 Handoff `a3d5f2f1-cc3e-427d-bbbc-88402949ce0f` now has a confirmed 1 MUSD withdrawal (`0x1c2044fd314e3355d946fe281de24e3fc24865a76a1338fc4e5eb1526c6e9038`) and confirmed 0.5 MUSD borrower repayment (`0x0fef1f0fd2b4121e31318a170ccf4024d0f4586dda243813d4fbd47c601e1f03`). Repayment was reduced before preparation to preserve the protocol minimum debt. These are separate transactions with separate receipts. V2 deployment, owner/reviewer signature flow and migration remain incomplete.
+
+### V2 deployment verified — 25/10/2026
+
+V2 deployed at `0x54bdde1c3be2e8fa178a55ae06700160846002ec`, tx `0x784bee378e8367542d2a60bb79fc0dbf3bb9fec3d2e4be3fe35909705f98cd7d`, canonical block 16354797. Verified exact creation calldata, owner/token/reviewer/quorum, 100 MUSD per-action cap, zero minimum buffer, policy version 1 and compiled runtime. V1 remains active. No migration performed. Owner + reviewer EIP-712 execution on the deployed contract is the next acceptance gate; deployment alone does not prove it. Evidence: `testnet-v2-deployment-evidence-2026-10-25.json`.

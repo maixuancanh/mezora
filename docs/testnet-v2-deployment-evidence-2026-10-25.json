@@ -1,0 +1,23 @@
+{
+  "verifiedAt": "2026-10-25T06:15:24.269Z",
+  "chainId": 31611,
+  "hash": "0x784bee378e8367542d2a60bb79fc0dbf3bb9fec3d2e4be3fe35909705f98cd7d",
+  "status": "success",
+  "address": "0x54bdde1c3be2e8fa178a55ae06700160846002ec",
+  "blockNumber": "16354797",
+  "blockHash": "0x648bf64824da792b8e618f74219b18ff3d401bce84f9fbe956becbde7e3d5f6b",
+  "codeHash": "0x38cbfcbdf31b420cc4b2dfb8c47873961f50a24596bb3443623b31e81b8d09fc",
+  "config": {
+    "owner": "0x2c7FFA7b22B5D75b390f7BCA5D75bE0475C85b31",
+    "reviewers": [
+      "0x018afE2Be696274bCb3A33B2FB1487F96f649bd6"
+    ],
+    "quorum": 1,
+    "maxSpend": "100",
+    "minimumBuffer": "0"
+  },
+  "policyVersion": "1",
+  "v1StillActive": true,
+  "migrationPerformed": false,
+  "ownerReviewerExecutionAccepted": false
+}

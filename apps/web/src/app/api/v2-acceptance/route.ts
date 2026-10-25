@@ -1,0 +1,4 @@
+import {NextRequest,NextResponse} from 'next/server';import {v2State,loadAcceptance,acceptanceAction} from '../../../server/v2-acceptance';import {readBody,errorResponse} from '../../../server/http';import {sessionAddress} from '../../../server/auth';import {database} from '../../../../../../packages/db/src/database';
+export const runtime='nodejs';export const dynamic='force-dynamic';
+export async function GET(req:NextRequest){try{const id=req.nextUrl.searchParams.get('id');return NextResponse.json({state:await v2State(),...(id?{review:await loadAcceptance(await database(),id)}:{})},{headers:{'Cache-Control':'no-store'}});}catch(e){return errorResponse(e);}}
+export async function POST(req:NextRequest){try{return NextResponse.json(await acceptanceAction(await readBody(req),await sessionAddress()));}catch(e){return errorResponse(e);}}
